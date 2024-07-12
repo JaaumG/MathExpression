@@ -11,7 +11,7 @@ public abstract class ExpressionUtils {
     }
 
     public static boolean isDigit(char c) {
-        return Character.isDigit(c);
+        return Character.isDigit(c) || c == '.';
     }
 
     public static int getIndexClosingBracket(String expression, int indexOpeningBracket) {
