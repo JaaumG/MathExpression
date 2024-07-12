@@ -27,7 +27,8 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
             if (isOpeningBracket(c)) {
                 int j = getIndexClosingBracket(expression, i);
-                VALUES.push(evaluate(expression.substring(i + 1, j)));
+                BigDecimal result = evaluate(expression.substring(i + 1, j));
+                VALUES.push(result);
                 i = j;
             } else if (isDigit(c) || (c == '-' && isMinusSignNegation(expression, i))) {
                 int start = i++;
