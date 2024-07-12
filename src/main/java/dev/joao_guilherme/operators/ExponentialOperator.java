@@ -12,6 +12,6 @@ public class ExponentialOperator extends Operator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return BigDecimalUtils.pow(a, b);
+        return BigDecimalUtils.pow(b, a);
     }
 }
