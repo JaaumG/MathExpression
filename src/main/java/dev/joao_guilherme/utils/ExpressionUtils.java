@@ -1,5 +1,7 @@
 package dev.joao_guilherme.utils;
 
+import dev.joao_guilherme.factory.OperatorFactory;
+
 public abstract class ExpressionUtils {
 
     public static boolean isMinusSignNegation(String expression, int index) {
@@ -7,7 +9,7 @@ public abstract class ExpressionUtils {
             return true;
         }
         char c = expression.charAt(index - 1);
-        return c == '(' || c == '[' || c == '{' || c == ',';
+        return c == '(' || c == '[' || c == '{' || c == ',' || OperatorFactory.getInstance().isOperator(c);
     }
 
     public static boolean isDigit(char c) {
