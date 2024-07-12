@@ -44,4 +44,8 @@ public abstract class BigDecimalUtils {
         }
         return new BigDecimal(result, MATH_CONTEXT);
     }
+
+    public static BigDecimal multiply(BigDecimal a, BigDecimal b) {
+        return a.multiply(b, MATH_CONTEXT);
+    }
 }
