@@ -12,6 +12,10 @@ public abstract class ExpressionUtils {
         return c == '(' || c == '[' || c == '{' || c == ',' || OperatorFactory.getInstance().isOperator(c);
     }
 
+    public static boolean isCharacter(char c) {
+        return Character.isLetter(c);
+    }
+
     public static boolean isDigit(char c) {
         return Character.isDigit(c) || c == '.';
     }
