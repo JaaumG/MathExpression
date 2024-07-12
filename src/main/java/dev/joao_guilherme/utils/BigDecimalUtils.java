@@ -3,6 +3,8 @@ package dev.joao_guilherme.utils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import static java.math.BigDecimal.*;
+
 public abstract class BigDecimalUtils {
 
     private static MathContext MATH_CONTEXT = MathContext.DECIMAL128;
@@ -16,9 +18,9 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal pow(BigDecimal base, BigDecimal exponent) {
-        if (exponent.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ONE;
-        if (exponent.compareTo(BigDecimal.ONE) == 0) return base;
-        if (exponent.compareTo(BigDecimal.ZERO) < 0) return BigDecimal.ONE.divide(pow(base, exponent.negate()), MATH_CONTEXT);
+        if (exponent.compareTo(ZERO) == 0) return ONE;
+        if (exponent.compareTo(ONE) == 0) return base;
+        if (exponent.compareTo(ZERO) < 0) return ONE.divide(pow(base, exponent.negate()), MATH_CONTEXT);
         if (exponent.scale() == 0) return base.pow(exponent.intValue());
 
         double lnBase = Math.log(base.doubleValue());
@@ -27,13 +29,13 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal factorial(BigDecimal a) {
-        if (a.compareTo(BigDecimal.ZERO) < 0)
+        if (a.compareTo(ZERO) < 0)
             throw new UnsupportedOperationException("Cannot calculate factorial of a negative number");
-        if (a.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ONE;
-        if (a.compareTo(BigDecimal.ONE) == 0) return BigDecimal.ONE;
+        if (a.compareTo(ZERO) == 0) return ONE;
+        if (a.compareTo(ONE) == 0) return ONE;
         if (a.scale() == 0) {
-            BigDecimal result = BigDecimal.ONE;
-            for (BigDecimal i = BigDecimal.ONE; i.compareTo(a) <= 0; i = i.add(BigDecimal.ONE)) {
+            BigDecimal result = ONE;
+            for (BigDecimal i = ONE; i.compareTo(a) <= 0; i = i.add(ONE)) {
                 result = result.multiply(i);
             }
             return result;
@@ -47,5 +49,27 @@ public abstract class BigDecimalUtils {
 
     public static BigDecimal multiply(BigDecimal a, BigDecimal b) {
         return a.multiply(b, MATH_CONTEXT);
+    }
+
+    public static BigDecimal sqrt(BigDecimal a) {
+        if (a.compareTo(ZERO) < 0) {
+            throw new IllegalArgumentException("Cannot compute the square root of a negative number.");
+        }
+        if (a.equals(ZERO)) {
+            return ZERO;
+        }
+
+        BigDecimal guess = a.divide(TWO, MATH_CONTEXT);
+        boolean more = true;
+
+        while (more) {
+            BigDecimal nextGuess = a.divide(guess, MATH_CONTEXT);
+            nextGuess = nextGuess.add(guess);
+            nextGuess = nextGuess.divide(TWO, MATH_CONTEXT);
+            more = nextGuess.subtract(guess).abs().compareTo(ZERO) != 0;
+            guess = nextGuess;
+        }
+
+        return guess;
     }
 }
