@@ -38,4 +38,8 @@ public abstract class BigDecimalUtils {
     public static BigDecimal nthRoot(BigDecimal a, BigDecimal n) {
         return BigDecimalMath.root(a, n, MATH_CONTEXT);
     }
+
+    public static BigDecimal log(BigDecimal base, BigDecimal a) {
+        return BigDecimalUtils.divide(BigDecimalMath.log(base, MATH_CONTEXT), BigDecimalMath.log(a, MATH_CONTEXT));
+    }
 }
