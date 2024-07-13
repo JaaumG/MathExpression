@@ -4,14 +4,15 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class ExponentialOperator extends Operator implements BinaryOperation {
-
-    public ExponentialOperator() {
-        super(3, '^');
-    }
+public class ExponentialOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
         return BigDecimalUtils.pow(b, a);
+    }
+
+    @Override
+    public int getPrecedence() {
+        return 3;
     }
 }

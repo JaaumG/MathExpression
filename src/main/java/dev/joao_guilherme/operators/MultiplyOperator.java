@@ -4,14 +4,15 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class MultiplyOperator extends Operator implements BinaryOperation {
-
-    public MultiplyOperator() {
-        super(2, '*');
-    }
+public class MultiplyOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
         return BigDecimalUtils.multiply(a, b);
+    }
+
+    @Override
+    public int getPrecedence() {
+        return 2;
     }
 }

@@ -4,14 +4,15 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class FactorialOperator extends Operator implements UnaryOperation{
-
-    public FactorialOperator() {
-        super(4, '!');
-    }
+public class FactorialOperator implements UnaryOperation{
 
     @Override
     public BigDecimal apply(BigDecimal a) {
         return BigDecimalUtils.factorial(a);
+    }
+
+    @Override
+    public int getPrecedence() {
+        return 4;
     }
 }
