@@ -60,7 +60,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
                     i += number.length();
                 }
             } else if (isOperator(String.valueOf(c))) {
-                Operator op = operator.get(String.valueOf(c));
+                Operator op = getOperator(String.valueOf(c));
                 while (!ops.empty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
                 ops.push(op);
                 i++;
