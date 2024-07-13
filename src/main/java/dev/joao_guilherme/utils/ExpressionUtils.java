@@ -1,15 +1,15 @@
 package dev.joao_guilherme.utils;
 
-import dev.joao_guilherme.factory.OperatorFactory;
+import dev.joao_guilherme.evaluators.ExpressionEvaluator;
 
 public abstract class ExpressionUtils {
 
-    public static boolean isMinusSignNegation(String expression, int index) {
+    public static boolean isMinusSignNegation(String expression, int index, ExpressionEvaluator evaluator) {
         if (index == 0) {
             return true;
         }
         char c = expression.charAt(index - 1);
-        return c == '(' || c == '[' || c == '{' || c == ',' || OperatorFactory.getInstance().isOperator(c);
+        return c == '(' || c == '[' || c == '{' || c == ',' || evaluator.isOperator(String.valueOf(c));
     }
 
     public static boolean isCharacter(char c) {
