@@ -6,7 +6,7 @@ public class SubtractOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return a.subtract(b);
+        return b.subtract(a);
     }
 
     @Override
