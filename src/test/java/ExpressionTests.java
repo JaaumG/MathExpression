@@ -17,10 +17,34 @@ public class ExpressionTests {
     }
 
     @Test
+    @DisplayName("Basic addition with negative numbers")
+    public void basicAdditionWithNegativeNumbers() {
+        Expression expression = new Expression("2 + -2");
+        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
     @DisplayName("Basic subtraction")
     public void basicSubtraction() {
         Expression expression = new Expression("2 - 2");
         assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Assert subtraction order is correct")
+    public void assertSubtractionOrder() {
+        Expression expression = new Expression("2 - 3");
+        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("3 - 2");
+        assertEquals(new BigDecimal(1).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Basic subtraction with negative numbers")
+    public void basicSubtractionWithNegativeNumbers() {
+        Expression expression = new Expression("2 - -2");
+        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
     }
 
     @Test
@@ -31,6 +55,13 @@ public class ExpressionTests {
     }
 
     @Test
+    @DisplayName("Basic multiplication with negative numbers")
+    public void basicMultiplicationWithNegativeNumbers() {
+        Expression expression = new Expression("2 * -2");
+        assertEquals(new BigDecimal(-4).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
     @DisplayName("Basic division")
     public void basicDivision() {
         Expression expression = new Expression("2 / 2");
@@ -38,10 +69,34 @@ public class ExpressionTests {
     }
 
     @Test
+    @DisplayName("Assert division order is correct")
+    public void assertDivisionOrder() {
+        Expression expression = new Expression("12 / 3");
+        assertEquals(new BigDecimal("4").compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("3 / 2");
+        assertEquals(new BigDecimal("1.5").compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Basic division with negative numbers")
+    public void basicDivisionWithNegativeNumbers() {
+        Expression expression = new Expression("2 / -2");
+        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
     @DisplayName("Basic exponentiation")
     public void basicExponentiation() {
         Expression expression = new Expression("2 ^ 2");
         assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Basic exponentiation with negative numbers")
+    public void basicExponentiationWithNegativeNumbers() {
+        Expression expression = new Expression("2 ^ -2");
+        assertEquals(new BigDecimal("0.25").compareTo(expression.evaluate()), 0);
     }
 
     @Test
