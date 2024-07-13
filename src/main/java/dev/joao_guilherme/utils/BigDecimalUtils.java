@@ -40,6 +40,10 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal log(BigDecimal base, BigDecimal a) {
-        return BigDecimalUtils.divide(BigDecimalMath.log(base, MATH_CONTEXT), BigDecimalMath.log(a, MATH_CONTEXT));
+        return divide(BigDecimalMath.log(base, MATH_CONTEXT), BigDecimalMath.log(a, MATH_CONTEXT));
+    }
+
+    public static BigDecimal ln(BigDecimal value) {
+        return BigDecimalMath.log(value, MATH_CONTEXT);
     }
 }
