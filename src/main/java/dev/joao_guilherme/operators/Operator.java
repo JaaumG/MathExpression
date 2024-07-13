@@ -1,20 +1,12 @@
 package dev.joao_guilherme.operators;
 
-public abstract class Operator {
+public interface Operator {
 
-    protected final int precedence;
-    protected final char symbol;
-
-    public Operator(int precedence, char symbol) {
-        this.precedence = precedence;
-        this.symbol = symbol;
+    default int getPrecedence() {
+        return 0;
     }
 
-    public char getSymbol() {
-        return symbol;
-    }
-
-    public final boolean hasHigherPrecedence(Operator other) {
-        return precedence > other.precedence;
+    default boolean hasHigherPrecedence(Operator operator) {
+        return this.getPrecedence() > operator.getPrecedence();
     }
 }
