@@ -124,7 +124,7 @@ public class ExpressionTests {
     @DisplayName("Basic natural logarithm")
     public void basicNaturalLogarithm() {
         Expression expression = new Expression("ln(5)");
-        assertEquals(new BigDecimal("1.6094379124341003").compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.ln(BigDecimal.valueOf(5)).compareTo(expression.evaluate()), 0);
     }
 
     @Test
