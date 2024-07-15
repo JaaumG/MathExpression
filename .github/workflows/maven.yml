@@ -22,6 +22,7 @@ jobs:
         run: mvn -B package --file pom.xml -DskipTests
 
   test:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +34,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Run tests with Maven
-        run: mvn -B test --file pom.xml
+        run: mvn test
       - name: Publish Test Report
         uses: dorny/test-reporter@v1
         with:
@@ -47,12 +48,13 @@ jobs:
           fail-on-error: 'true'
 
   publish:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn deploy -s $GITHUB_WORKSPACE/.github/settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       - name: Automatic Tagging of Releases
