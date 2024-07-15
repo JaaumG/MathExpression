@@ -35,17 +35,17 @@ jobs:
           cache: maven
       - name: Run tests with Maven
         run: mvn test
-      - name: Publish Test Report
-        uses: dorny/test-reporter@v1
-        with:
-          path: 'target/surefire-reports/TEST-*.xml'
-          reporter: 'java-junit'
-          name: 'Test Report for CI/CD Pipeline'
-          only-summary: 'true'
-          list-suites: 'all'
-          list-tests: 'all'
-          max-annotations: '10'
-          fail-on-error: 'true'
+#      - name: Publish Test Report
+#        uses: dorny/test-reporter@v1
+#        with:
+#          path: 'target/surefire-reports/TEST-*.xml'
+#          reporter: 'java-junit'
+#          name: 'Test Report for CI/CD Pipeline'
+#          only-summary: 'true'
+#          list-suites: 'all'
+#          list-tests: 'all'
+#          max-annotations: '10'
+#          fail-on-error: 'true'
 
   publish:
     needs: test
