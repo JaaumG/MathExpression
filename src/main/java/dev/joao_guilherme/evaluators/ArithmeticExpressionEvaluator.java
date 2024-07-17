@@ -25,7 +25,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
     public ArithmeticExpressionEvaluator() {
         this.functions.put("sqrt", new SquareRootFunction());
         this.functions.put("nrt", new NthRootFunction());
-        this.functions.put("ln" ,new NaturalLogarithmFunction());
+        this.functions.put("ln", new NaturalLogarithmFunction());
         this.functions.put("log", new LogarithmFunction());
         this.operator.put("+", new AdditionOperator());
         this.operator.put("-", new SubtractOperator());
@@ -33,6 +33,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         this.operator.put("*", new MultiplyOperator());
         this.operator.put("^", new ExponentialOperator());
         this.operator.put("!", new FactorialOperator());
+        this.operator.put("%", new PercentageOperator());
         this.variables.put("e", BigDecimalUtils.E);
         this.variables.put("pi", BigDecimalUtils.PI);
     }
