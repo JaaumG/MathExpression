@@ -1,45 +1,20 @@
 package dev.joao_guilherme.evaluators;
 
-import dev.joao_guilherme.functions.LogarithmFunction;
-import dev.joao_guilherme.functions.NaturalLogarithmFunction;
-import dev.joao_guilherme.functions.NthRootFunction;
-import dev.joao_guilherme.functions.SquareRootFunction;
-import dev.joao_guilherme.operators.*;
-import dev.joao_guilherme.utils.BigDecimalUtils;
+import dev.joao_guilherme.operators.Operator;
+import dev.joao_guilherme.operators.PercentageOperator;
 import dev.joao_guilherme.utils.FunctionUtils;
 
 import java.math.BigDecimal;
 import java.util.Stack;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static dev.joao_guilherme.utils.ExpressionUtils.*;
 import static dev.joao_guilherme.utils.OperationUtils.applyOperator;
 
-public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
-
-    protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
-    protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z]+");
-
-
-    public ArithmeticExpressionEvaluator() {
-        this.functions.put("sqrt", new SquareRootFunction());
-        this.functions.put("nrt", new NthRootFunction());
-        this.functions.put("ln", new NaturalLogarithmFunction());
-        this.functions.put("log", new LogarithmFunction());
-        this.operator.put("+", new AdditionOperator());
-        this.operator.put("-", new SubtractOperator());
-        this.operator.put("/", new DivideOperator());
-        this.operator.put("*", new MultiplyOperator());
-        this.operator.put("^", new ExponentialOperator());
-        this.operator.put("!", new FactorialOperator());
-        this.operator.put("%", new PercentageOperator());
-        this.variables.put("e", BigDecimalUtils.E);
-        this.variables.put("pi", BigDecimalUtils.PI);
-    }
+public class PercentageBasedAdditionEvaluator extends ArithmeticExpressionEvaluator {
 
     @Override
-    public BigDecimal evaluate(final String expression) {
+    public BigDecimal evaluate(String expression) {
         if (expression == null) throw new IllegalArgumentException("Expression cannot be null");
 
         Stack<BigDecimal> values = new Stack<>();
@@ -62,6 +37,17 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
                 }
             } else if (isOperator(String.valueOf(c))) {
                 Operator op = getOperator(String.valueOf(c));
+                if (op instanceof PercentageOperator pop) {
+                    if (values.isEmpty()) throw new IllegalArgumentException("Invalid expression: " + expression);
+                    if (i + 1 < expression.length() && (expression.charAt(i + 1) == '*' || expression.charAt(i + 1) == '/' || expression.charAt(i + 1) == '(')){
+                        i++;
+                        values.push(pop.apply(values.pop()));
+                        continue;
+                    } else
+                        pop.applyImplicitPercentageOperator(values, ops);
+                    i++;
+                    continue;
+                }
                 while (!ops.empty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
                 ops.push(op);
                 i++;
@@ -95,11 +81,5 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         while (!ops.empty()) applyOperator(ops.pop(), values);
 
         return values.pop().stripTrailingZeros();
-    }
-
-    protected static void checkForImplicitMultiplication(Stack<Operator> ops, int i, String expression) {
-        if ((i > 0 && (isDigit(expression.charAt(i - 1)) || isClosingBracket(expression.charAt(i - 1)))) || (expression.length() > i + 1 && isOpeningBracket(expression.charAt(i + 1)))) {
-            ops.push(new MultiplyOperator());
-        }
     }
 }
