@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.joao_guilherme</groupId>
-    <artifactId>MathExpression</artifactId>
+    <artifactId>math_expression</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <distributionManagement>
