@@ -1,0 +1,100 @@
+name: Build Test and Publish
+on:
+  push:
+    branches: [ "main"]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify -DskipTests
+
+  test:
+    needs: build
+    name: Test
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Run tests with Maven
+        run: mvn -B test --file pom.xml
+      - name: Publish Test Report
+        uses: dorny/test-reporter@v1.9.1
+        if: success() || failure()
+        with:
+          path: 'target/surefire-reports/TEST-*.xml'
+          reporter: 'java-junit'
+          name: 'Test Report for CI/CD Pipeline'
+          only-summary: 'true'
+          list-suites: 'all'
+          list-tests: 'all'
+          max-annotations: '10'
+          fail-on-error: 'true'
+
+  tag:
+    needs: test
+    name: Tag
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: V
+          release_branches: main
+          create_annotated_tag: false
+          fetch_all_tags: false
+          dry_run: false
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+  publish:
+    if : github.ref == 'refs/heads/main'
+    needs: tag
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
