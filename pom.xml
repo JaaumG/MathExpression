@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <version>5.10.3</version>
             <scope>compile</scope>
         </dependency>
 
@@ -46,4 +46,24 @@
         </developer>
     </developers>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>me.ccampo</groupId>
+                <artifactId>git-version-maven-plugin</artifactId>
+                <version>0.1.0</version> <!-- Use the latest stable version if possible -->
+                <extensions>true</extensions>
+                <configuration>
+                    <strategy hint="git">
+                        <!-- Strategy specific configuration goes here -->
+                    </strategy>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
