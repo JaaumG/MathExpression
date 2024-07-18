@@ -6,7 +6,7 @@
 
     <groupId>dev.joao_guilherme</groupId>
     <artifactId>math_expression</artifactId>
-    <version>${revision}</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -52,14 +52,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.17.1</version>
-                <configuration>
-                    <generateBackupPoms>false</generateBackupPoms>
-                </configuration>
             </plugin>
         </plugins>
 
