@@ -54,7 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Publish to GitHub Packages Apache Maven
-        run: mvn deploy -s $GITHUB_WORKSPACE/.github/settings.xml
+        run: mvn --batch-mode deploy -s $GITHUB_WORKSPACE/.github/settings.xml
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       - name: Automatic Tagging of Releases
