@@ -1,7 +1,7 @@
 name: Build Test and Publish
 on:
   push:
-    branches: [ "main"]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -82,7 +82,7 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
 
   publish:
-    if : github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     needs: tag
     name: Publish
     runs-on: ubuntu-latest
@@ -95,6 +95,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Update version in pom.xml
+        run: |
+          TAG_VERSION=$(echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/^v//')
+          mvn versions:set -DnewVersion=$TAG_VERSION
+          mvn versions:commit
       - name: Publish package
         run: mvn --batch-mode deploy
         env:
