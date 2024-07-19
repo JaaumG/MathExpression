@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 @FunctionalInterface
 public interface Function {
 
-    BigDecimal apply(BigDecimal value, BigDecimal... args);
+    BigDecimal apply(BigDecimal... args);
 }
