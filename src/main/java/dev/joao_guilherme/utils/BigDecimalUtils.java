@@ -46,4 +46,17 @@ public abstract class BigDecimalUtils {
     public static BigDecimal ln(BigDecimal value) {
         return BigDecimalMath.log(value, MATH_CONTEXT);
     }
+
+    public static BigDecimal sin(BigDecimal arg) {
+        return BigDecimalMath.sin(arg, MATH_CONTEXT);
+    }
+
+    public static BigDecimal cos(BigDecimal arg) {
+        return BigDecimalMath.cos(arg, MATH_CONTEXT);
+    }
+
+    public static BigDecimal tan(BigDecimal arg) {
+        return BigDecimalMath.tan(arg, MATH_CONTEXT);
+    }
+
 }
