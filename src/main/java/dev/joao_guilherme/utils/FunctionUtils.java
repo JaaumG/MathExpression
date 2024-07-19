@@ -18,15 +18,21 @@ public abstract class FunctionUtils {
 
         if (innerExpression.contains(",")) {
             String[] parts = innerExpression.split(",");
-            BigDecimal[] args = Arrays.stream(parts).skip(1).map(BigDecimal::new).toArray(BigDecimal[]::new);
-            result = applyFunction(func, new BigDecimal(parts[0]), args);
+            BigDecimal[] args = Arrays.stream(parts).map(a -> {
+                if (evaluator.isVariable(a)) {
+                    return evaluator.getVariable(a);
+                } else {
+                    return new BigDecimal(a);
+                }
+            }).toArray(BigDecimal[]::new);
+            result = applyFunction(func, args);
         } else {
             result = applyFunction(func, evaluator.evaluate(innerExpression));
         }
         return result;
     }
 
-    public static BigDecimal applyFunction(Function function, BigDecimal value, BigDecimal... args) {
-        return function.apply(value, args);
+    public static BigDecimal applyFunction(Function function, BigDecimal... args) {
+        return function.apply(args);
     }
 }
