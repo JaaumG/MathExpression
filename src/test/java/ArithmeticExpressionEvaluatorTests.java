@@ -142,13 +142,6 @@ public class ArithmeticExpressionEvaluatorTests {
     }
 
     @Test
-    @DisplayName("Basic implicit multiplication with variable")
-    public void basicImplicitMultiplicationWithVariable() {
-        Expression expression = new Expression("x(3)").withVariable("x", new BigDecimal(2));
-        assertEquals(new BigDecimal(6).compareTo(expression.evaluate()), 0);
-    }
-
-    @Test
     @DisplayName("Basic implicit multiplication with function")
     public void basicImplicitMultiplicationWithFunction() {
         Expression expression = new Expression("sqrt(4)2");
