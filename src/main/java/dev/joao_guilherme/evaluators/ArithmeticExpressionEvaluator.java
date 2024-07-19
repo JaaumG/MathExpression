@@ -1,9 +1,9 @@
 package dev.joao_guilherme.evaluators;
 
-import dev.joao_guilherme.functions.LogarithmFunction;
-import dev.joao_guilherme.functions.NaturalLogarithmFunction;
-import dev.joao_guilherme.functions.NthRootFunction;
-import dev.joao_guilherme.functions.SquareRootFunction;
+import dev.joao_guilherme.functions.*;
+import dev.joao_guilherme.functions.trigonometric.CosFunction;
+import dev.joao_guilherme.functions.trigonometric.SinFunction;
+import dev.joao_guilherme.functions.trigonometric.TanFunction;
 import dev.joao_guilherme.operators.*;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 import dev.joao_guilherme.utils.FunctionUtils;
@@ -27,6 +27,14 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         this.functions.put("nrt", new NthRootFunction());
         this.functions.put("ln", new NaturalLogarithmFunction());
         this.functions.put("log", new LogarithmFunction());
+        this.functions.put("sin", new SinFunction());
+        this.functions.put("cos", new CosFunction());
+        this.functions.put("tan", new TanFunction());
+        this.functions.put("abs", new AbsoluteFunction());
+        this.functions.put("ceil", new CeilFunction());
+        this.functions.put("floor", new FloorFunction());
+
+
         this.operator.put("+", new AdditionOperator());
         this.operator.put("-", new SubtractOperator());
         this.operator.put("/", new DivideOperator());
