@@ -4,12 +4,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class FunctionImplicitInstatiationTests {
+public class FunctionImplicitInstantiationTests {
 
     @Test
     @DisplayName("Instantiating a function")
@@ -159,5 +160,59 @@ public class FunctionImplicitInstatiationTests {
         } catch (ArithmeticException e) {
             assertEquals("No real roots", e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("Instantiating a greatest common divisor function")
+    public void instantiatingGCDFunction() {
+        Expression expression = new Expression("gcd(48,18)").withFunction("gcd", ((args) -> {
+            if (args.length != 2) throw new IllegalArgumentException("GCD function takes two arguments");
+            BigInteger a = args[0].toBigInteger();
+            BigInteger b = args[1].toBigInteger();
+            return new BigDecimal(a.gcd(b));
+        }));
+        assertEquals(BigDecimal.valueOf(6).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Instantiating a least common multiple function")
+    public void instantiatingLCMFunction() {
+        Expression expression = new Expression("lcm(48,18)").withFunction("lcm", ((args) -> {
+            if (args.length != 2) throw new IllegalArgumentException("LCM function takes two arguments");
+            BigInteger a = args[0].toBigInteger();
+            BigInteger b = args[1].toBigInteger();
+            return new BigDecimal(a.multiply(b).divide(a.gcd(b)));
+        }));
+        assertEquals(BigDecimal.valueOf(144).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Instantiating a compound interest function")
+    public void instantiatingCompoundInterestFunction() {
+        Expression expression = new Expression("compoundInterest(1000, 0.05, 10)").withFunction("compoundInterest", ((args) -> {
+            if (args.length != 3) throw new IllegalArgumentException("Compound Interest function takes three arguments");
+            BigDecimal principal = args[0];
+            BigDecimal rate = args[1];
+            int timesCompounded = args[2].intValue();
+            return principal.multiply(BigDecimal.valueOf(Math.pow(1 + rate.doubleValue(), timesCompounded)));
+        }));
+        assertEquals(BigDecimal.valueOf(1628.894626777442).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Instantiating a Fibonacci sequence function")
+    public void instantiatingFibonacciFunction() {
+        Expression expression = new Expression("fibonacci(10)").withFunction("fibonacci", ((args) -> {
+            if (args.length != 1) throw new IllegalArgumentException("Fibonacci function takes one argument");
+            int n = args[0].intValue();
+            BigDecimal[] fib = new BigDecimal[n + 1];
+            fib[0] = BigDecimal.ZERO;
+            fib[1] = BigDecimal.ONE;
+            for (int i = 2; i <= n; i++) {
+                fib[i] = fib[i - 1].add(fib[i - 2]);
+            }
+            return fib[n];
+        }));
+        assertEquals(BigDecimal.valueOf(55).compareTo(expression.evaluate()), 0);
     }
 }
