@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class NthRootFunction implements Function {
 
     @Override
-    public BigDecimal apply(BigDecimal value, BigDecimal... args) {
-        return BigDecimalUtils.nthRoot(value, args[0]);
+    public BigDecimal apply(BigDecimal... args) {
+        return BigDecimalUtils.nthRoot(args[0], args[1]);
     }
 }
