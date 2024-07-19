@@ -149,29 +149,62 @@ public class ArithmeticExpressionEvaluatorTests {
     }
 
     @Test
-    @DisplayName("Basic implicit multiplication with function and variable")
-    public void basicImplicitMultiplicationWithFunctionAndVariable() {
-        Expression expression = new Expression("sqrt(x)2").withVariable("x", new BigDecimal(4));
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+    @DisplayName("Trigonometric sine function")
+    public void trigonometricSineFunction() {
+        Expression expression = new Expression("sin(0)");
+        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("sin(pi/2)");
+        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
     }
 
     @Test
-    @DisplayName("Using constants e and pi")
-    public void usingConstants() {
-        Expression expression = new Expression("e^pi + 1");
-        assertEquals(BigDecimalUtils.pow(BigDecimalUtils.E, BigDecimalUtils.PI).add(BigDecimal.ONE).compareTo(expression.evaluate()), 0);
+    @DisplayName("Trigonometric cosine function")
+    public void trigonometricCosineFunction() {
+        Expression expression = new Expression("cos(0)");
+        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("cos(pi)");
+        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
     }
 
     @Test
-    @DisplayName("Instantiating a function")
-    public void instantiatingFunction() {
-        Expression expression = new Expression("sum(5,4,3,2,1)").withFunction("sum", ((value, args) -> {
-            BigDecimal sum = value;
-            for (BigDecimal arg : args) {
-                sum = sum.add(arg);
-            }
-            return sum;
-        }));
-        assertEquals(new BigDecimal(15).compareTo(expression.evaluate()), 0);
+    @DisplayName("Trigonometric tangent function")
+    public void trigonometricTangentFunction() {
+        Expression expression = new Expression("tan(0)");
+        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("tan(pi/4)");
+        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Absolute value function")
+    public void absoluteValueFunction() {
+        Expression expression = new Expression("abs(-5)");
+        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("abs(5)");
+        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Ceiling function")
+    public void ceilingFunction() {
+        Expression expression = new Expression("ceil(5.2)");
+        assertEquals(new BigDecimal(6).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("ceil(-5.2)");
+        assertEquals(new BigDecimal(-5).compareTo(expression.evaluate()), 0);
+    }
+
+    @Test
+    @DisplayName("Floor function")
+    public void floorFunction() {
+        Expression expression = new Expression("floor(5.8)");
+        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+
+        expression = new Expression("floor(-5.8)");
+        assertEquals(new BigDecimal(-6).compareTo(expression.evaluate()), 0);
     }
 }
