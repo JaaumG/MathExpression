@@ -4,6 +4,7 @@ import ch.obermuhlner.math.big.BigDecimalMath;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 
 public abstract class BigDecimalUtils {
 
@@ -59,4 +60,15 @@ public abstract class BigDecimalUtils {
         return BigDecimalMath.tan(arg, MATH_CONTEXT);
     }
 
+    public static BigDecimal abs(BigDecimal a) {
+        return a.abs();
+    }
+
+    public static BigDecimal ceil(BigDecimal a) {
+        return a.setScale(0, RoundingMode.CEILING);
+    }
+
+    public static BigDecimal floor(BigDecimal a) {
+        return a.setScale(0, RoundingMode.FLOOR);
+    }
 }
