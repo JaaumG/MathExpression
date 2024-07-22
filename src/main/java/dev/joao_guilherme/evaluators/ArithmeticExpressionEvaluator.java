@@ -23,27 +23,26 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
 
 
     public ArithmeticExpressionEvaluator() {
-        this.functions.put("sqrt", new SquareRootFunction());
-        this.functions.put("nrt", new NthRootFunction());
-        this.functions.put("ln", new NaturalLogarithmFunction());
-        this.functions.put("log", new LogarithmFunction());
-        this.functions.put("sin", new SinFunction());
-        this.functions.put("cos", new CosFunction());
-        this.functions.put("tan", new TanFunction());
-        this.functions.put("abs", new AbsoluteFunction());
-        this.functions.put("ceil", new CeilFunction());
-        this.functions.put("floor", new FloorFunction());
+        addFunction("sqrt", new SquareRootFunction());
+        addFunction("nrt", new NthRootFunction());
+        addFunction("ln", new NaturalLogarithmFunction());
+        addFunction("log", new LogarithmFunction());
+        addFunction("sin", new SinFunction());
+        addFunction("cos", new CosFunction());
+        addFunction("tan", new TanFunction());
+        addFunction("abs", new AbsoluteFunction());
+        addFunction("ceil", new CeilFunction());
+        addFunction("floor", new FloorFunction());
 
-
-        this.operator.put("+", new AdditionOperator());
-        this.operator.put("-", new SubtractOperator());
-        this.operator.put("/", new DivideOperator());
-        this.operator.put("*", new MultiplyOperator());
-        this.operator.put("^", new ExponentialOperator());
-        this.operator.put("!", new FactorialOperator());
-        this.operator.put("%", new PercentageOperator());
-        this.variables.put("e", BigDecimalUtils.E);
-        this.variables.put("pi", BigDecimalUtils.PI);
+        addOperator("+", new AdditionOperator());
+        addOperator("-", new SubtractOperator());
+        addOperator("/", new DivideOperator());
+        addOperator("*", new MultiplyOperator());
+        addOperator("^", new ExponentialOperator());
+        addOperator("!", new FactorialOperator());
+        addOperator("%", new PercentageOperator());
+        addVariable("e", BigDecimalUtils.E);
+        addVariable("pi", BigDecimalUtils.PI);
     }
 
     @Override
