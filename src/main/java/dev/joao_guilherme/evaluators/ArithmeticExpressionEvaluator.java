@@ -19,7 +19,7 @@ import static dev.joao_guilherme.utils.OperationUtils.applyOperator;
 public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
 
     protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
-    protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z]+");
+    protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z0-9]+");
 
 
     public ArithmeticExpressionEvaluator() {
