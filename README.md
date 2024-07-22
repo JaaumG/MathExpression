@@ -122,6 +122,21 @@ public class Main {
 }
 ```
 
+### Equation Evaluator
+
+This feature allows you to solve equations for a given variable.
+```java
+import dev.joao_guilherme.Expression;
+
+public class Main {
+    public static void main(String[] args) {
+        Expression equation = new Expression("2^x = 16");
+        System.out.println(equation.solveForX()); // x = 4
+    }
+}
+```
+**This feature is still in beta and may not work as expected.**
+
 ## Included functions
 
 - `sqrt(x)`: Returns the square root of `x`.
@@ -140,3 +155,15 @@ public class Main {
 
 - `pi`: The mathematical constant π.
 - `e`: The mathematical constant e.
+
+## How to install
+
+### Maven
+
+```xml
+<dependency>
+    <groupId>dev.joao_guilherme</groupId>
+    <artifactId>math-expression</artifactId>
+    <version>3.1.0</version>
+</dependency>
+```
