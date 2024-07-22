@@ -25,6 +25,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
     public ArithmeticExpressionEvaluator() {
         addFunction("sqrt", new SquareRootFunction());
         addFunction("nrt", new NthRootFunction());
+        addFunction("exp", new ExponentialFunction());
         addFunction("ln", new NaturalLogarithmFunction());
         addFunction("log", new LogarithmFunction());
         addFunction("sin", new SinFunction());
