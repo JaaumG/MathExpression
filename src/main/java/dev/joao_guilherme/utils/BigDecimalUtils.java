@@ -45,7 +45,11 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal ln(BigDecimal value) {
-        return BigDecimalMath.log(value, MATH_CONTEXT);
+        return divide(BigDecimalMath.log(value, MATH_CONTEXT), BigDecimalMath.log(E, MATH_CONTEXT));
+    }
+
+    public static BigDecimal exp(BigDecimal value) {
+        return BigDecimalMath.exp(value, MATH_CONTEXT);
     }
 
     public static BigDecimal sin(BigDecimal arg) {
