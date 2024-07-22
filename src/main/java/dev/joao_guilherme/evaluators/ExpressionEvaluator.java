@@ -76,4 +76,8 @@ public interface ExpressionEvaluator {
             }
         });
     }
+
+    default <T extends Operator> void addOperator(String operator, T operatorImpl) {
+        this.operator.put(operator, operatorImpl);
+    }
 }
