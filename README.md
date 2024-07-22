@@ -164,6 +164,6 @@ public class Main {
 <dependency>
     <groupId>dev.joao_guilherme</groupId>
     <artifactId>math-expression</artifactId>
-    <version>3.1.0</version>
+    <version>0.3.3</version>
 </dependency>
 ```
