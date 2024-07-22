@@ -126,7 +126,7 @@ public class Main {
 
 - `sqrt(x)`: Returns the square root of `x`.
 - `nrt(n, x)`: Returns the `n`-th root of `x`.
-- `log(base, x)`: Returns the logarithm of `x` in the base `base`.
+- `log(x, base)`: Returns the logarithm of `x` in the base `base`.
 - `ln(x)`: Returns the natural logarithm of `x`.
 - `exp(x)`: Returns the exponential of `x`.
 - `sin(x)`: Returns the sine of `x`.
