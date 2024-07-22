@@ -16,6 +16,14 @@ public abstract class BigDecimalUtils {
         MATH_CONTEXT = mathContext;
     }
 
+    public static BigDecimal subtract(BigDecimal a, BigDecimal b) {
+        return a.subtract(b, MATH_CONTEXT);
+    }
+
+    public static BigDecimal add(BigDecimal a, BigDecimal b) {
+        return a.add(b, MATH_CONTEXT);
+    }
+
     public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
         return dividend.divide(divisor, MATH_CONTEXT);
     }
@@ -65,7 +73,7 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal abs(BigDecimal a) {
-        return a.abs();
+        return a.abs(MATH_CONTEXT);
     }
 
     public static BigDecimal ceil(BigDecimal a) {
