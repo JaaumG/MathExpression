@@ -2,6 +2,7 @@ package dev.joao_guilherme;
 
 
 import dev.joao_guilherme.evaluators.ArithmeticExpressionEvaluator;
+import dev.joao_guilherme.evaluators.EquationEvaluator;
 import dev.joao_guilherme.evaluators.ExpressionEvaluator;
 import dev.joao_guilherme.functions.Function;
 import dev.joao_guilherme.operators.BinaryOperation;
@@ -26,6 +27,14 @@ public class Expression {
 
     public BigDecimal evaluate() {
         return this.evaluator.evaluate(expression);
+    }
+
+    public BigDecimal solveForX() {
+        return solveFor("x");
+    }
+
+    public BigDecimal solveFor(String variable) {
+        return EquationEvaluator.solve(expression, variable, evaluator);
     }
 
     public String getExpression() {
