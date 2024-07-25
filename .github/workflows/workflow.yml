@@ -69,13 +69,6 @@ jobs:
         uses: nnichols/maven-version-bump-action@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: v
-          release_branches: main
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
@@ -97,12 +90,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Update version in pom.xml
-        run: |
-          TAG_VERSION=$(echo "${{ steps.tag_version.outputs.new_tag }}" | sed 's/^v//')
-          mvn versions:set -DnewVersion=$TAG_VERSION
-          mvn versions:commit
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn -Drevision=${{ steps.tag_version.outputs.new_tag }} --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

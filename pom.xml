@@ -6,7 +6,7 @@
 
     <groupId>dev.joao_guilherme</groupId>
     <artifactId>math_expression</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
 
     <distributionManagement>
         <repository>
