@@ -16,6 +16,18 @@ public abstract class BigDecimalUtils {
         MATH_CONTEXT = mathContext;
     }
 
+    public static BigDecimal valueOf(long value) {
+        return new BigDecimal(value, MATH_CONTEXT);
+    }
+
+    public static BigDecimal valueOf(double value) {
+        return new BigDecimal(value, MATH_CONTEXT);
+    }
+
+    public static BigDecimal valueOf(String value) {
+        return new BigDecimal(value, MATH_CONTEXT);
+    }
+
     public static BigDecimal subtract(BigDecimal a, BigDecimal b) {
         return a.subtract(b, MATH_CONTEXT);
     }
