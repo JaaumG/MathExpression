@@ -17,7 +17,7 @@ public abstract class EquationEvaluator {
     }
 
     private static BigDecimal solveEquation(String left, String right, ExpressionEvaluator evaluator) {
-        return findRoot(left + "-(" + right + ")", new BigDecimal("1E-25"), evaluator);
+        return findRoot(left + "-(" + right + ")", BigDecimalUtils.valueOf("1E-25"), evaluator);
     }
 
     private static BigDecimal findRoot(String expression, BigDecimal tolerance, ExpressionEvaluator evaluator) {
