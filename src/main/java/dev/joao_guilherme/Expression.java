@@ -52,7 +52,18 @@ public class Expression {
     }
 
     public Expression withVariable(String variable, String value) {
-        return new Expression(expression.replaceAll(variable, value), evaluator);
+        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+        return this;
+    }
+
+    public Expression withVariable(String variable, long value) {
+        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+        return this;
+    }
+
+    public Expression withVariable(String variable, double value) {
+        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+        return this;
     }
 
     public Expression withOperator(String operator, int precedence, BinaryOperation operation) {
