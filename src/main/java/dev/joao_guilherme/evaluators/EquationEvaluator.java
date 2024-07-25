@@ -32,11 +32,4 @@ public abstract class EquationEvaluator {
         }
         throw new ArithmeticException("Unable to find root within tolerance");
     }
-
-    private static BigDecimal evaluateDerivative(String expression, String variable, BigDecimal x, ExpressionEvaluator evaluator) {
-        BigDecimal h = new BigDecimal("1E-10");
-        BigDecimal fX = evaluator.evaluate(expression.replace(variable, x.toPlainString()));
-        BigDecimal fXPlusH = evaluator.evaluate(expression.replace(variable, BigDecimalUtils.add(x,h).toPlainString()));
-        return BigDecimalUtils.divide(BigDecimalUtils.subtract(fXPlusH, fX), h);
-    }
 }
