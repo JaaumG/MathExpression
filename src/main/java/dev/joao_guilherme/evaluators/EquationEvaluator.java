@@ -1,5 +1,6 @@
 package dev.joao_guilherme.evaluators;
 
+import dev.joao_guilherme.Expression;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
@@ -23,11 +24,11 @@ public abstract class EquationEvaluator {
     private static BigDecimal findRoot(String expression, BigDecimal tolerance, ExpressionEvaluator evaluator) {
         BigDecimal x = BigDecimal.ONE;
         for (int i = 0; i < 1000; i++) {
-            BigDecimal fValue = evaluator.evaluate(expression.replace(variable, x.toPlainString()));
-            BigDecimal fDerivative = evaluateDerivative(expression, variable, x, evaluator);
+            BigDecimal fValue = new Expression(expression, evaluator).withVariable(variable, x).evaluate();
+            BigDecimal fDerivative = DerivativeEvaluator.derivate(evaluator, expression, variable, x);
             if (fDerivative.compareTo(BigDecimal.ZERO) == 0) break;
-            BigDecimal nextX = BigDecimalUtils.subtract(x, BigDecimalUtils.divide(fValue, fDerivative));
-            if (BigDecimalUtils.abs(BigDecimalUtils.subtract(nextX, x)).compareTo(tolerance) < 0) return nextX.stripTrailingZeros();
+            BigDecimal nextX = BigDecimalUtils.subtract(x, BigDecimalUtils.divide(fValue, fDerivative)); // x - f(x) / f'(x)
+            if (BigDecimalUtils.abs(BigDecimalUtils.subtract(nextX, x)).compareTo(tolerance) < 0) return nextX.stripTrailingZeros(); // If |x - nextX| < tolerance, return nextX
             x = nextX;
         }
         throw new ArithmeticException("Unable to find root within tolerance");
