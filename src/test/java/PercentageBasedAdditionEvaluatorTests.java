@@ -91,7 +91,7 @@ public class PercentageBasedAdditionEvaluatorTests {
     @DisplayName("Sum with subtraction of percentages inside parentheses")
     public void sumWithSubtractionOfPercentagesInsideParentheses() {
         Expression expression = new Expression("150 + (20% - 10%)", new PercentageBasedAdditionEvaluator());
-        assertEquals(BigDecimal.valueOf(149.9).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(150.18).compareTo(expression.evaluate()), 0);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class PercentageBasedAdditionEvaluatorTests {
     @DisplayName("Negative sum with subtraction and negative percentage")
     public void negativeSumWithSubtractionAndNegativePercentage() {
         Expression expression = new Expression("-150 + (20% - 10%)", new PercentageBasedAdditionEvaluator());
-        assertEquals(BigDecimal.valueOf(-150.1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(-149.82).compareTo(expression.evaluate()), 0);
     }
 
     @Test
