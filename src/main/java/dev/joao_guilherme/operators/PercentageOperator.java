@@ -17,22 +17,34 @@ public class PercentageOperator implements UnaryOperation {
 
     public void applyImplicitPercentageOperator(Stack<BigDecimal> values, Stack<Operator> ops) {
         if (ops.empty()) {
-            values.push(apply(values.pop()));
+            if (values.peek().compareTo(BigDecimal.ZERO) > 0) {
+                values.push(apply(values.pop()));
+            } else {
+                BigDecimal percentage = apply(values.pop());
+                BigDecimal value = values.pop();
+                BigDecimal percentageOf = value.multiply(percentage);
+                values.push(value.add(percentageOf));
+            }
         } else {
             switch (ops.peek()) {
-                case AdditionOperator ignored -> {
+                case AdditionOperator additionOperator -> {
                     BigDecimal percentage = values.pop();
                     BigDecimal value = values.pop();
-                    values.push(value.add(value.multiply(apply(percentage))));
+                    values.push(additionOperator.apply(value, value.multiply(apply(percentage))));
                 }
-                case SubtractOperator ignored -> {
+                case SubtractOperator subtractOperator -> {
                     BigDecimal percentage = values.pop();
                     BigDecimal value = values.pop();
-                    values.push(value.subtract(value.multiply(apply(percentage))));
+                    values.push(subtractOperator.apply(value.multiply(apply(percentage)), value));
                     ops.pop();
                 }
                 case MultiplyOperator ignored -> values.push(apply(values.pop()));
-                case DivideOperator ignored -> values.push(apply(values.pop()));
+                case DivideOperator divideOperator -> {
+                    BigDecimal percentage = apply(values.pop());
+                    BigDecimal lastValue = values.pop();
+                    values.push(divideOperator.apply(percentage, lastValue));
+                    ops.pop();
+                }
                 default -> throw new IllegalStateException("Unexpected value: " + ops.peek());
             }
         }
