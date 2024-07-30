@@ -70,6 +70,11 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
                 }
             } else if (isOperator(String.valueOf(c))) {
                 Operator op = getOperator(String.valueOf(c));
+                if (op instanceof PercentageOperator pop) {
+                    this.percentageHandler(pop, ops, values, expression, i);
+                    i++;
+                    continue;
+                }
                 while (!ops.empty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
                 ops.push(op);
                 i++;
@@ -109,5 +114,9 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         if ((i > 0 && (isDigit(expression.charAt(i - 1)) || isClosingBracket(expression.charAt(i - 1)))) || (expression.length() > i + 1 && isOpeningBracket(expression.charAt(i + 1)))) {
             ops.push(new MultiplyOperator());
         }
+    }
+
+    protected void percentageHandler(PercentageOperator pop, Stack<Operator> operators, Stack<BigDecimal> values, String expression, int i) {
+        values.push(pop.apply(values.pop()));
     }
 }
