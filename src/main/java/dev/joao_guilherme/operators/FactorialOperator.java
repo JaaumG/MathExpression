@@ -15,4 +15,9 @@ public class FactorialOperator implements UnaryOperation{
     public int getPrecedence() {
         return 4;
     }
+
+    @Override
+    public char getSymbol() {
+        return '!';
+    }
 }

@@ -15,4 +15,9 @@ public class ExponentialOperator implements BinaryOperation {
     public int getPrecedence() {
         return 3;
     }
+
+    @Override
+    public char getSymbol() {
+        return '^';
+    }
 }

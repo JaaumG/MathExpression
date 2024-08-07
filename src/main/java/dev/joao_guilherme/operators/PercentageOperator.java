@@ -15,6 +15,11 @@ public class PercentageOperator implements UnaryOperation {
         return 4;
     }
 
+    @Override
+    public char getSymbol() {
+        return '%';
+    }
+
     public void applyImplicitPercentageOperator(Deque<BigDecimal> values, Deque<Operator> ops) {
         if (ops.isEmpty()) {
             if (values.peek().compareTo(BigDecimal.ZERO) > 0) {

@@ -15,4 +15,9 @@ public class MultiplyOperator implements BinaryOperation {
     public int getPrecedence() {
         return 2;
     }
+
+    @Override
+    public char getSymbol() {
+        return '*';
+    }
 }

@@ -15,4 +15,9 @@ public class SubtractOperator implements BinaryOperation {
     public int getPrecedence() {
         return 1;
     }
+
+    @Override
+    public char getSymbol() {
+        return '-';
+    }
 }
