@@ -50,7 +50,7 @@ public abstract class ExpressionEvaluator implements Cloneable {
     }
 
     public void addOperator(char operator, int precedence, UnaryOperation operation) {
-        operators.put(operator, new UnaryOperation() {
+        addOperator(new UnaryOperation() {
             @Override
             public BigDecimal apply(BigDecimal a) {
                 return operation.apply(a);
@@ -60,11 +60,16 @@ public abstract class ExpressionEvaluator implements Cloneable {
             public int getPrecedence() {
                 return precedence;
             }
+
+            @Override
+            public char getSymbol() {
+                return operator;
+            }
         });
     }
 
     public void addOperator(char operator, int precedence, BinaryOperation operation) {
-        operators.put(operator, new BinaryOperation() {
+        addOperator(new BinaryOperation() {
             @Override
             public BigDecimal apply(BigDecimal b, BigDecimal a) {
                 return operation.apply(b, a);
@@ -74,11 +79,16 @@ public abstract class ExpressionEvaluator implements Cloneable {
             public int getPrecedence() {
                 return precedence;
             }
+
+            @Override
+            public char getSymbol() {
+                return operator;
+            }
         });
     }
 
-    public <T extends Operator> void addOperator(char operator, T operatorImpl) {
-        operators.put(operator, operatorImpl);
+    protected void addOperator(Operator operator) {
+        operators.put(operator.getSymbol(), operator);
     }
 
     public ExpressionEvaluator newInstance() {
