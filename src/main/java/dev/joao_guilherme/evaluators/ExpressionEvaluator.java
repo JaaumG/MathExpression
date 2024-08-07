@@ -80,4 +80,12 @@ public abstract class ExpressionEvaluator implements Cloneable {
     public <T extends Operator> void addOperator(char operator, T operatorImpl) {
         operators.put(operator, operatorImpl);
     }
+
+    public ExpressionEvaluator newInstance() {
+        try {
+            return (ExpressionEvaluator) this.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Failed to clone ExpressionEvaluator");
+        }
+    }
 }
