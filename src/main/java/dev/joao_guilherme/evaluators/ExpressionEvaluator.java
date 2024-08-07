@@ -9,47 +9,47 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface ExpressionEvaluator {
+public abstract class ExpressionEvaluator implements Cloneable {
 
     Map<Character, Operator> operators = new HashMap<>();
     Map<String, Function> functions = new HashMap<>();
     Map<String, BigDecimal> variables = new HashMap<>();
 
-    BigDecimal evaluate(String expression);
+    public abstract BigDecimal evaluate(String expression);
 
-    default void addFunction(String function, Function functionImpl) {
+    public void addFunction(String function, Function functionImpl) {
         functions.put(function, functionImpl);
     }
 
-    default boolean isOperator(char operator) {
+    public boolean isOperator(char operator) {
         return operators.containsKey(operator);
     }
 
-    default Operator getOperator(char operator) {
+    public Operator getOperator(char operator) {
         return operators.get(operator);
     }
 
-    default boolean isFunction(String function) {
+    public boolean isFunction(String function) {
         return functions.containsKey(function);
     }
 
-    default Function getFunction(String function) {
+    public Function getFunction(String function) {
         return functions.get(function);
     }
 
-    default boolean isVariable(String variable) {
+    public boolean isVariable(String variable) {
         return variables.containsKey(variable);
     }
 
-    default BigDecimal getVariable(String variable) {
+    public BigDecimal getVariable(String variable) {
         return variables.get(variable);
     }
 
-    default void addVariable(String variable, BigDecimal value) {
+    public void addVariable(String variable, BigDecimal value) {
         variables.put(variable, value);
     }
 
-    default void addOperator(char operator, int precedence, UnaryOperation operation) {
+    public void addOperator(char operator, int precedence, UnaryOperation operation) {
         operators.put(operator, new UnaryOperation() {
             @Override
             public BigDecimal apply(BigDecimal a) {
@@ -63,7 +63,7 @@ public interface ExpressionEvaluator {
         });
     }
 
-    default void addOperator(char operator, int precedence, BinaryOperation operation) {
+    public void addOperator(char operator, int precedence, BinaryOperation operation) {
         operators.put(operator, new BinaryOperation() {
             @Override
             public BigDecimal apply(BigDecimal b, BigDecimal a) {
@@ -77,7 +77,7 @@ public interface ExpressionEvaluator {
         });
     }
 
-    default <T extends Operator> void addOperator(char operator, T operatorImpl) {
+    public <T extends Operator> void addOperator(char operator, T operatorImpl) {
         operators.put(operator, operatorImpl);
     }
 }
