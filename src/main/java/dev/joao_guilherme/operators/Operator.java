@@ -8,6 +8,10 @@ public interface Operator {
         return 0;
     }
 
+    default char getSymbol() {
+        return ' ';
+    }
+
     default boolean hasHigherPrecedence(Operator operator) {
         return this.getPrecedence() > operator.getPrecedence();
     }
