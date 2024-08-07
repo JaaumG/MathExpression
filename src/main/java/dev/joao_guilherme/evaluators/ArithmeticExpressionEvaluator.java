@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 import static dev.joao_guilherme.utils.ExpressionUtils.*;
 import static dev.joao_guilherme.utils.OperationUtils.applyOperator;
 
-public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
+public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
     protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z0-9]+");
-    protected static final Deque<BigDecimal> values = new ArrayDeque<>();
-    protected static final Deque<Operator> ops = new ArrayDeque<>();
-    protected static int currentIndex = 0;
+    protected Deque<BigDecimal> values = new ArrayDeque<>();
+    protected Deque<Operator> ops = new ArrayDeque<>();
+    protected int currentIndex = 0;
 
 
     public ArithmeticExpressionEvaluator() {
@@ -54,12 +54,16 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
     public BigDecimal evaluate(final String expression) {
         if (expression == null) throw new IllegalArgumentException("Expression cannot be null");
 
+        currentIndex = 0;
+        ops = new ArrayDeque<>();
+        values = new ArrayDeque<>();
+
         while (currentIndex < expression.length()) {
             char c = expression.charAt(currentIndex);
 
             if (isOpeningBracket(c)) {
                 int j = getIndexClosingBracket(expression, currentIndex);
-                values.push(evaluate(expression.substring(currentIndex + 1, j)));
+                values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
                 currentIndex = j + 1;
             } else if (isDigit(c) || (c == '-' && isMinusSignNegation(expression, currentIndex, this))) {
                 checkForImplicitMultiplication(expression);
@@ -111,7 +115,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         return values.pop().stripTrailingZeros();
     }
 
-    protected static void checkForImplicitMultiplication(String expression) {
+    protected void checkForImplicitMultiplication(String expression) {
         if ((currentIndex > 0 && (isDigit(expression.charAt(currentIndex - 1)) || isClosingBracket(expression.charAt(currentIndex - 1)))) || (expression.length() > currentIndex + 1 && isOpeningBracket(expression.charAt(currentIndex + 1)))) {
             ops.push(new MultiplyOperator());
         }

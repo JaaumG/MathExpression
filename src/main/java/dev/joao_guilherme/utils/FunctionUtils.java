@@ -19,10 +19,10 @@ public abstract class FunctionUtils {
 
         if (innerExpression.contains(",")) {
             String[] parts = splitPreservingGroups(innerExpression);
-            BigDecimal[] args = Arrays.stream(parts).map(evaluator::evaluate).toArray(BigDecimal[]::new);
+            BigDecimal[] args = Arrays.stream(parts).map(evaluator.newInstance()::evaluate).toArray(BigDecimal[]::new);
             return applyFunction(func, args);
         } else {
-            return applyFunction(func, evaluator.evaluate(innerExpression));
+            return applyFunction(func, evaluator.newInstance().evaluate(innerExpression));
         }
     }
 
