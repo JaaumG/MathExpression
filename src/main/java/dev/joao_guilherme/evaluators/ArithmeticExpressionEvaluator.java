@@ -39,13 +39,13 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         addFunction("ceil", new CeilFunction());
         addFunction("floor", new FloorFunction());
 
-        addOperator('+', new AdditionOperator());
-        addOperator('-', new SubtractOperator());
-        addOperator('/', new DivideOperator());
-        addOperator('*', new MultiplyOperator());
-        addOperator('^', new ExponentialOperator());
-        addOperator('!', new FactorialOperator());
-        addOperator('%', new PercentageOperator());
+        addOperator(new AdditionOperator());
+        addOperator(new SubtractOperator());
+        addOperator(new DivideOperator());
+        addOperator(new MultiplyOperator());
+        addOperator(new ExponentialOperator());
+        addOperator(new FactorialOperator());
+        addOperator(new PercentageOperator());
         addVariable("e", BigDecimalUtils.E);
         addVariable("pi", BigDecimalUtils.PI);
     }
