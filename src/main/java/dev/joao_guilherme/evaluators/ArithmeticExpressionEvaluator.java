@@ -24,6 +24,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
     protected Deque<BigDecimal> values = new ArrayDeque<>();
     protected Deque<Operator> ops = new ArrayDeque<>();
     protected int currentIndex = 0;
+    protected String expression;
 
 
     public ArithmeticExpressionEvaluator() {
@@ -51,12 +52,13 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
     }
 
     @Override
-    public BigDecimal evaluate(final String expression) {
-        if (expression == null) throw new IllegalArgumentException("Expression cannot be null");
+    public BigDecimal evaluate(final String expressionToEvaluate) {
+        if (expressionToEvaluate == null) throw new IllegalArgumentException("Expression cannot be null");
 
         currentIndex = 0;
         ops = new ArrayDeque<>();
         values = new ArrayDeque<>();
+        this.expression = expressionToEvaluate;
 
         while (currentIndex < expression.length()) {
             char c = expression.charAt(currentIndex);
@@ -66,7 +68,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
                 values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
                 currentIndex = j + 1;
             } else if (isDigit(c) || (c == '-' && isMinusSignNegation(expression, currentIndex, this))) {
-                checkForImplicitMultiplication(expression);
+                checkForImplicitMultiplication();
                 Matcher matcher = NUMBER_PATTERN.matcher(expression.substring(currentIndex));
                 if (matcher.find()) {
                     String number = matcher.group();
@@ -76,7 +78,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
             } else if (isOperator(c)) {
                 Operator op = getOperator(c);
                 if (op instanceof PercentageOperator pop) {
-                    this.percentageHandler(pop, expression);
+                    this.percentageHandler(pop);
                     currentIndex++;
                     continue;
                 }
@@ -88,7 +90,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
                 if (matcher.find()) {
                     String string = matcher.group();
                     if (isFunction(string)) {
-                        checkForImplicitMultiplication(expression);
+                        checkForImplicitMultiplication();
                         currentIndex += string.length();
                         if (currentIndex < expression.length() && isOpeningBracket(expression.charAt(currentIndex))) {
                             BigDecimal result = FunctionUtils.evaluateFunction(this, expression, currentIndex - string.length(), currentIndex);
@@ -98,7 +100,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
                             throw new IllegalArgumentException("Invalid function: " + string);
                         }
                     } else if (isVariable(string)) {
-                        checkForImplicitMultiplication(expression);
+                        checkForImplicitMultiplication();
                         currentIndex += string.length();
                         values.push(getVariable(string));
                     } else {
@@ -115,13 +117,13 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         return values.pop().stripTrailingZeros();
     }
 
-    protected void checkForImplicitMultiplication(String expression) {
+    protected void checkForImplicitMultiplication() {
         if ((currentIndex > 0 && (isDigit(expression.charAt(currentIndex - 1)) || isClosingBracket(expression.charAt(currentIndex - 1)))) || (expression.length() > currentIndex + 1 && isOpeningBracket(expression.charAt(currentIndex + 1)))) {
             ops.push(new MultiplyOperator());
         }
     }
 
-    protected void percentageHandler(PercentageOperator pop, String expression) {
+    protected void percentageHandler(PercentageOperator pop) {
         values.push(pop.apply(values.pop()));
     }
 }
