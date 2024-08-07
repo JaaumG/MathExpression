@@ -39,13 +39,13 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
         addFunction("ceil", new CeilFunction());
         addFunction("floor", new FloorFunction());
 
-        addOperator("+", new AdditionOperator());
-        addOperator("-", new SubtractOperator());
-        addOperator("/", new DivideOperator());
-        addOperator("*", new MultiplyOperator());
-        addOperator("^", new ExponentialOperator());
-        addOperator("!", new FactorialOperator());
-        addOperator("%", new PercentageOperator());
+        addOperator('+', new AdditionOperator());
+        addOperator('-', new SubtractOperator());
+        addOperator('/', new DivideOperator());
+        addOperator('*', new MultiplyOperator());
+        addOperator('^', new ExponentialOperator());
+        addOperator('!', new FactorialOperator());
+        addOperator('%', new PercentageOperator());
         addVariable("e", BigDecimalUtils.E);
         addVariable("pi", BigDecimalUtils.PI);
     }
@@ -69,8 +69,8 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
                     values.push(new BigDecimal(number));
                     currentIndex += number.length();
                 }
-            } else if (isOperator(String.valueOf(c))) {
-                Operator op = getOperator(String.valueOf(c));
+            } else if (isOperator(c)) {
+                Operator op = getOperator(c);
                 if (op instanceof PercentageOperator pop) {
                     this.percentageHandler(pop, expression);
                     currentIndex++;

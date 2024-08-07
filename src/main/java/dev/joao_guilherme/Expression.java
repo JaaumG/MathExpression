@@ -93,22 +93,22 @@ public class Expression {
         return this;
     }
 
-    public Expression withOperator(String operator, int precedence, BinaryOperation operation) {
+    public Expression withOperator(char operator, int precedence, BinaryOperation operation) {
         evaluator.addOperator(operator, precedence, operation);
         return this;
     }
 
-    public Expression withOperator(String operator, int precedence, UnaryOperation operation) {
+    public Expression withOperator(char operator, int precedence, UnaryOperation operation) {
         evaluator.addOperator(operator, precedence, operation);
         return this;
     }
 
-    public Expression withOperator(String operator, BinaryOperation operation) {
+    public Expression withOperator(char operator, BinaryOperation operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
     }
 
-    public Expression withOperator(String operator, UnaryOperation operation) {
+    public Expression withOperator(char operator, UnaryOperation operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
     }

@@ -10,7 +10,7 @@ public abstract class ExpressionUtils {
         }
         char c = expression.charAt(index - 1);
         if (c == '%') return false; //In case of the last char is a percentage operator then in every way it should consider the minus sign as operator
-        return c == '(' || c == '[' || c == '{' || c == ',' || evaluator.isOperator(String.valueOf(c));
+        return c == '(' || c == '[' || c == '{' || c == ',' || evaluator.isOperator(c);
     }
 
     public static boolean isCharacter(char c) {
