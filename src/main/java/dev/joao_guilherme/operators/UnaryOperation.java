@@ -5,5 +5,6 @@ import java.math.BigDecimal;
 @FunctionalInterface
 public interface UnaryOperation extends Operator {
 
+    @Override
     BigDecimal apply(BigDecimal a);
 }
