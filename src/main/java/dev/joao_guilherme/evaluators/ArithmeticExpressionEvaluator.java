@@ -9,7 +9,8 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 import dev.joao_guilherme.utils.FunctionUtils;
 
 import java.math.BigDecimal;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +21,8 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
 
     protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
     protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z0-9]+");
-    protected static final Stack<BigDecimal> values = new Stack<>();
-    protected static final Stack<Operator> ops = new Stack<>();
+    protected static final Deque<BigDecimal> values = new ArrayDeque<>();
+    protected static final Deque<Operator> ops = new ArrayDeque<>();
     protected static int currentIndex = 0;
 
 
@@ -75,7 +76,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
                     currentIndex++;
                     continue;
                 }
-                while (!ops.empty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
+                while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
                 ops.push(op);
                 currentIndex++;
             } else if (isCharacter(c)) {
@@ -105,7 +106,7 @@ public class ArithmeticExpressionEvaluator implements ExpressionEvaluator {
             }
         }
 
-        while (!ops.empty()) applyOperator(ops.pop(), values);
+        while (!ops.isEmpty()) applyOperator(ops.pop(), values);
 
         return values.pop().stripTrailingZeros();
     }

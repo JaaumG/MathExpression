@@ -1,7 +1,7 @@
 package dev.joao_guilherme.operators;
 
 import java.math.BigDecimal;
-import java.util.Stack;
+import java.util.Deque;
 
 public class PercentageOperator implements UnaryOperation {
 
@@ -15,8 +15,8 @@ public class PercentageOperator implements UnaryOperation {
         return 4;
     }
 
-    public void applyImplicitPercentageOperator(Stack<BigDecimal> values, Stack<Operator> ops) {
-        if (ops.empty()) {
+    public void applyImplicitPercentageOperator(Deque<BigDecimal> values, Deque<Operator> ops) {
+        if (ops.isEmpty()) {
             if (values.peek().compareTo(BigDecimal.ZERO) > 0) {
                 values.push(apply(values.pop()));
             } else {
