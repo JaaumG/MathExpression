@@ -8,107 +8,103 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class VariableTests {
+class VariableTests {
 
     @Test
     @DisplayName("Basic implicit multiplication with variable")
-    public void basicImplicitMultiplicationWithVariable() {
+    void basicImplicitMultiplicationWithVariable() {
         Expression expression = new Expression("x(3)").withVariable("x", BigDecimal.valueOf(2));
-        assertEquals(BigDecimal.valueOf(6).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(6), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic implicit multiplication with function and variable")
-    public void basicImplicitMultiplicationWithFunctionAndVariable() {
+    void basicImplicitMultiplicationWithFunctionAndVariable() {
         Expression expression = new Expression("sqrt(x)2").withVariable("x", BigDecimal.valueOf(4));
-        assertEquals(BigDecimal.valueOf(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Using constants e and pi")
-    public void usingConstants() {
+    void usingConstants() {
         Expression expression = new Expression("e^pi + 1");
         BigDecimal expected = BigDecimalUtils.pow(BigDecimalUtils.E, BigDecimalUtils.PI).add(BigDecimal.ONE);
-        assertEquals(expected.compareTo(expression.evaluate()), 0);
+        assertEquals(expected, expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic addition with variable")
-    public void basicAdditionWithVariable() {
+    void basicAdditionWithVariable() {
         Expression expression = new Expression("x + 5").withVariable("x", BigDecimal.valueOf(10));
-        assertEquals(BigDecimal.valueOf(15).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(15), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic subtraction with variable")
-    public void basicSubtractionWithVariable() {
+    void basicSubtractionWithVariable() {
         Expression expression = new Expression("x - 5").withVariable("x", BigDecimal.valueOf(10));
-        assertEquals(BigDecimal.valueOf(5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic multiplication with variable")
-    public void basicMultiplicationWithVariable() {
+    void basicMultiplicationWithVariable() {
         Expression expression = new Expression("x * 5").withVariable("x", BigDecimal.valueOf(10));
-        assertEquals(BigDecimal.valueOf(50).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(50), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic division with variable")
-    public void basicDivisionWithVariable() {
+    void basicDivisionWithVariable() {
         Expression expression = new Expression("x / 5").withVariable("x", BigDecimal.valueOf(10));
-        assertEquals(BigDecimal.valueOf(2).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(2), expression.evaluate());
     }
 
     @Test
     @DisplayName("Variable in complex expression")
-    public void variableInComplexExpression() {
+    void variableInComplexExpression() {
         Expression expression = new Expression("3x + 2y - z")
                 .withVariable("x", BigDecimal.valueOf(2))
                 .withVariable("y", BigDecimal.valueOf(3))
                 .withVariable("z", BigDecimal.valueOf(1));
-        assertEquals(BigDecimal.valueOf(11).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(11), expression.evaluate());
     }
 
     @Test
     @DisplayName("Nested functions with variable")
-    public void nestedFunctionsWithVariable() {
-        Expression expression = new Expression("sqrt(x^2 + y^2)")
-                .withVariable("x", BigDecimal.valueOf(3))
-                .withVariable("y", BigDecimal.valueOf(4));
-        assertEquals(BigDecimal.valueOf(5).compareTo(expression.evaluate()), 0);
+    void nestedFunctionsWithVariable() {
+        Expression expression = new Expression("sqrt(x^2 + y^2)").withVariable("x", BigDecimal.valueOf(3)).withVariable("y", BigDecimal.valueOf(4));
+        assertEquals(BigDecimal.valueOf(5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Variable in percentage expression")
-    public void variableInPercentageExpression() {
+    void variableInPercentageExpression() {
         Expression expression = new Expression("x + 10%", new PercentageBasedAdditionEvaluator()).withVariable("x", BigDecimal.valueOf(100));
-        assertEquals(BigDecimal.valueOf(110).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(110), expression.evaluate());
     }
 
     @Test
     @DisplayName("Variable in exponent expression")
-    public void variableInExponentExpression() {
-        Expression expression = new Expression("2^x")
-                .withVariable("x", BigDecimal.valueOf(3));
-        assertEquals(BigDecimal.valueOf(8).compareTo(expression.evaluate()), 0);
+    void variableInExponentExpression() {
+        Expression expression = new Expression("2^x").withVariable("x", BigDecimal.valueOf(3));
+        assertEquals(BigDecimal.valueOf(8), expression.evaluate());
     }
 
     @Test
     @DisplayName("Variable with implicit multiplication and parentheses")
-    public void variableWithImplicitMultiplicationAndParentheses() {
-        Expression expression = new Expression("2(x + 3)")
-                .withVariable("x", BigDecimal.valueOf(4));
-        assertEquals(BigDecimal.valueOf(14).compareTo(expression.evaluate()), 0);
+    void variableWithImplicitMultiplicationAndParentheses() {
+        Expression expression = new Expression("2(x + 3)").withVariable("x", BigDecimal.valueOf(4));
+        assertEquals(BigDecimal.valueOf(14), expression.evaluate());
     }
 
     @Test
     @DisplayName("Multiple variables in one expression")
-    public void multipleVariablesInOneExpression() {
+    void multipleVariablesInOneExpression() {
         Expression expression = new Expression("a * b + c")
                 .withVariable("a", BigDecimal.valueOf(2))
                 .withVariable("b", BigDecimal.valueOf(3))
                 .withVariable("c", BigDecimal.valueOf(4));
-        assertEquals(BigDecimal.valueOf(10).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimal.valueOf(10), expression.evaluate());
     }
 }

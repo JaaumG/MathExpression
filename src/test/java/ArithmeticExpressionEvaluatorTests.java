@@ -3,208 +3,206 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ArithmeticExpressionEvaluatorTests {
+class ArithmeticExpressionEvaluatorTests {
 
     @Test
     @DisplayName("Basic addition")
-    public void basicAddition() {
+    void basicAddition() {
         Expression expression = new Expression("2 + 2");
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic addition with negative numbers")
-    public void basicAdditionWithNegativeNumbers() {
+    void basicAdditionWithNegativeNumbers() {
         Expression expression = new Expression("2 + -2");
-        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(0), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic subtraction")
-    public void basicSubtraction() {
+    void basicSubtraction() {
         Expression expression = new Expression("2 - 2");
-        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(0), expression.evaluate());
     }
 
     @Test
     @DisplayName("Assert subtraction order is correct")
-    public void assertSubtractionOrder() {
+    void assertSubtractionOrder() {
         Expression expression = new Expression("2 - 3");
-        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-1), expression.evaluate());
 
         expression = new Expression("3 - 2");
-        assertEquals(new BigDecimal(1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic subtraction with negative numbers")
-    public void basicSubtractionWithNegativeNumbers() {
+    void basicSubtractionWithNegativeNumbers() {
         Expression expression = new Expression("2 - -2");
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic multiplication")
-    public void basicMultiplication() {
+    void basicMultiplication() {
         Expression expression = new Expression("2 * 2");
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic multiplication with negative numbers")
-    public void basicMultiplicationWithNegativeNumbers() {
+    void basicMultiplicationWithNegativeNumbers() {
         Expression expression = new Expression("2 * -2");
-        assertEquals(new BigDecimal(-4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic division")
-    public void basicDivision() {
+    void basicDivision() {
         Expression expression = new Expression("2 / 2");
-        assertEquals(new BigDecimal(1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Assert division order is correct")
-    public void assertDivisionOrder() {
+    void assertDivisionOrder() {
         Expression expression = new Expression("12 / 3");
-        assertEquals(new BigDecimal("4").compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
 
         expression = new Expression("3 / 2");
-        assertEquals(new BigDecimal("1.5").compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1.5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic division with negative numbers")
-    public void basicDivisionWithNegativeNumbers() {
+    void basicDivisionWithNegativeNumbers() {
         Expression expression = new Expression("2 / -2");
-        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic exponentiation")
-    public void basicExponentiation() {
+    void basicExponentiation() {
         Expression expression = new Expression("2 ^ 2");
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic exponentiation with negative numbers")
-    public void basicExponentiationWithNegativeNumbers() {
+    void basicExponentiationWithNegativeNumbers() {
         Expression expression = new Expression("2 ^ -2");
-        assertEquals(new BigDecimal("0.25").compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(0.25), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic factorial")
-    public void basicFactorial() {
+    void basicFactorial() {
         Expression expression = new Expression("5!");
-        assertEquals(new BigDecimal(120).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(120), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic square root")
-    public void basicSquareRoot() {
+    void basicSquareRoot() {
         Expression expression = new Expression("sqrt(4)");
-        assertEquals(new BigDecimal(2).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(2), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic logarithm")
-    public void basicLogarithm() {
+    void basicLogarithm() {
         Expression expression = new Expression("log(5,4)");
-        assertEquals(BigDecimalUtils.log(BigDecimal.valueOf(5), BigDecimal.valueOf(4)).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.log(BigDecimalUtils.valueOf(5), BigDecimalUtils.valueOf(4)), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic natural logarithm")
-    public void basicNaturalLogarithm() {
+    void basicNaturalLogarithm() {
         Expression expression = new Expression("ln(5)");
-        assertEquals(BigDecimalUtils.ln(BigDecimal.valueOf(5)).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.ln(BigDecimalUtils.valueOf(5)), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic nth root")
-    public void basicNthRoot() {
+    void basicNthRoot() {
         Expression expression = new Expression("nrt(125,3)");
-        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic implicit multiplication")
-    public void basicImplicitMultiplication() {
+    void basicImplicitMultiplication() {
         Expression expression = new Expression("2(3)");
-        assertEquals(new BigDecimal(6).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(6), expression.evaluate());
     }
 
     @Test
     @DisplayName("Basic implicit multiplication with function")
-    public void basicImplicitMultiplicationWithFunction() {
+    void basicImplicitMultiplicationWithFunction() {
         Expression expression = new Expression("sqrt(4)2");
-        assertEquals(new BigDecimal(4).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(4), expression.evaluate());
     }
 
     @Test
     @DisplayName("Trigonometric sine function")
-    public void trigonometricSineFunction() {
+    void trigonometricSineFunction() {
         Expression expression = new Expression("sin(0)");
-        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(0), expression.evaluate());
 
         expression = new Expression("sin(pi/2)");
-        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Trigonometric cosine function")
-    public void trigonometricCosineFunction() {
+    void trigonometricCosineFunction() {
         Expression expression = new Expression("cos(0)");
-        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1), expression.evaluate());
 
         expression = new Expression("cos(pi)");
-        assertEquals(new BigDecimal(-1).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Trigonometric tangent function")
-    public void trigonometricTangentFunction() {
+    void trigonometricTangentFunction() {
         Expression expression = new Expression("tan(0)");
-        assertEquals(new BigDecimal(0).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(0), expression.evaluate());
 
         expression = new Expression("tan(pi/4)");
-        assertEquals(BigDecimal.ONE.compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(1), expression.evaluate());
     }
 
     @Test
     @DisplayName("Absolute value function")
-    public void absoluteValueFunction() {
+    void absoluteValueFunction() {
         Expression expression = new Expression("abs(-5)");
-        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(5), expression.evaluate());
 
         expression = new Expression("abs(5)");
-        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Ceiling function")
-    public void ceilingFunction() {
+    void ceilingFunction() {
         Expression expression = new Expression("ceil(5.2)");
-        assertEquals(new BigDecimal(6).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(6), expression.evaluate());
 
         expression = new Expression("ceil(-5.2)");
-        assertEquals(new BigDecimal(-5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-5), expression.evaluate());
     }
 
     @Test
     @DisplayName("Floor function")
-    public void floorFunction() {
+    void floorFunction() {
         Expression expression = new Expression("floor(5.8)");
-        assertEquals(new BigDecimal(5).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(5), expression.evaluate());
 
         expression = new Expression("floor(-5.8)");
-        assertEquals(new BigDecimal(-6).compareTo(expression.evaluate()), 0);
+        assertEquals(BigDecimalUtils.valueOf(-6), expression.evaluate());
     }
 }
