@@ -95,4 +95,8 @@ public abstract class BigDecimalUtils {
     public static BigDecimal floor(BigDecimal a) {
         return a.setScale(0, RoundingMode.FLOOR);
     }
+
+    public static BigDecimal removeScientificNotation(BigDecimal a) {
+        return new BigDecimal(a.toPlainString());
+    }
 }
