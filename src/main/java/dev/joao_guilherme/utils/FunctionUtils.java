@@ -12,6 +12,10 @@ import static dev.joao_guilherme.utils.ExpressionUtils.getIndexClosingBracket;
 
 public abstract class FunctionUtils {
 
+    private FunctionUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static BigDecimal evaluateFunction(ExpressionEvaluator evaluator, String expression, int start, int i) {
         int j = getIndexClosingBracket(expression, i);
         String innerExpression = expression.substring(i + 1, j);

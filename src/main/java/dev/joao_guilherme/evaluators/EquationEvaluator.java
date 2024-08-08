@@ -9,6 +9,10 @@ public abstract class EquationEvaluator {
 
     private static String variable;
 
+    private EquationEvaluator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static BigDecimal solve(String equation, String variable, ExpressionEvaluator evaluator) {
         EquationEvaluator.variable = variable;
         String[] sides = equation.replaceAll("\\s+", "").split("=");

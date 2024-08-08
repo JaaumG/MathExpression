@@ -8,84 +8,88 @@ import java.math.RoundingMode;
 
 public abstract class BigDecimalUtils {
 
-    private static MathContext MATH_CONTEXT = MathContext.DECIMAL128;
-    public static final BigDecimal PI = BigDecimalMath.pi(MATH_CONTEXT);
-    public static final BigDecimal E = BigDecimalMath.e(MATH_CONTEXT);
+    private static MathContext mathContext = MathContext.DECIMAL128;
+    public static final BigDecimal PI = BigDecimalMath.pi(mathContext);
+    public static final BigDecimal E = BigDecimalMath.e(mathContext);
+
+    private BigDecimalUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static void withMathContext(MathContext mathContext) {
-        MATH_CONTEXT = mathContext;
+        BigDecimalUtils.mathContext = mathContext;
     }
 
     public static BigDecimal valueOf(long value) {
-        return new BigDecimal(value, MATH_CONTEXT);
+        return new BigDecimal(value, mathContext);
     }
 
     public static BigDecimal valueOf(double value) {
-        return new BigDecimal(value, MATH_CONTEXT);
+        return new BigDecimal(String.valueOf(value), mathContext);
     }
 
     public static BigDecimal valueOf(String value) {
-        return new BigDecimal(value, MATH_CONTEXT);
+        return new BigDecimal(value, mathContext);
     }
 
     public static BigDecimal subtract(BigDecimal a, BigDecimal b) {
-        return a.subtract(b, MATH_CONTEXT);
+        return a.subtract(b, mathContext);
     }
 
     public static BigDecimal add(BigDecimal a, BigDecimal b) {
-        return a.add(b, MATH_CONTEXT);
+        return a.add(b, mathContext);
     }
 
     public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
-        return dividend.divide(divisor, MATH_CONTEXT);
+        return dividend.divide(divisor, mathContext);
     }
 
     public static BigDecimal pow(BigDecimal base, BigDecimal exponent) {
-        return BigDecimalMath.pow(base, exponent, MATH_CONTEXT);
+        return BigDecimalMath.pow(base, exponent, mathContext);
     }
 
     public static BigDecimal factorial(BigDecimal a) {
-        return BigDecimalMath.factorial(a, MATH_CONTEXT);
+        return BigDecimalMath.factorial(a, mathContext);
     }
 
     public static BigDecimal multiply(BigDecimal a, BigDecimal b) {
-        return a.multiply(b, MATH_CONTEXT);
+        return a.multiply(b, mathContext);
     }
 
     public static BigDecimal sqrt(BigDecimal a) {
-        return BigDecimalMath.sqrt(a, MATH_CONTEXT);
+        return BigDecimalMath.sqrt(a, mathContext);
     }
 
     public static BigDecimal nthRoot(BigDecimal a, BigDecimal n) {
-        return BigDecimalMath.root(a, n, MATH_CONTEXT);
+        return BigDecimalMath.root(a, n, mathContext);
     }
 
     public static BigDecimal log(BigDecimal base, BigDecimal a) {
-        return divide(BigDecimalMath.log(base, MATH_CONTEXT), BigDecimalMath.log(a, MATH_CONTEXT));
+        return divide(BigDecimalMath.log(base, mathContext), BigDecimalMath.log(a, mathContext));
     }
 
     public static BigDecimal ln(BigDecimal value) {
-        return divide(BigDecimalMath.log(value, MATH_CONTEXT), BigDecimalMath.log(E, MATH_CONTEXT));
+        return divide(BigDecimalMath.log(value, mathContext), BigDecimalMath.log(E, mathContext));
     }
 
     public static BigDecimal exp(BigDecimal value) {
-        return BigDecimalMath.exp(value, MATH_CONTEXT);
+        return BigDecimalMath.exp(value, mathContext);
     }
 
     public static BigDecimal sin(BigDecimal arg) {
-        return BigDecimalMath.sin(arg, MATH_CONTEXT);
+        return BigDecimalMath.sin(arg, mathContext);
     }
 
     public static BigDecimal cos(BigDecimal arg) {
-        return BigDecimalMath.cos(arg, MATH_CONTEXT);
+        return BigDecimalMath.cos(arg, mathContext);
     }
 
     public static BigDecimal tan(BigDecimal arg) {
-        return BigDecimalMath.tan(arg, MATH_CONTEXT);
+        return BigDecimalMath.tan(arg, mathContext);
     }
 
     public static BigDecimal abs(BigDecimal a) {
-        return a.abs(MATH_CONTEXT);
+        return a.abs(mathContext);
     }
 
     public static BigDecimal ceil(BigDecimal a) {

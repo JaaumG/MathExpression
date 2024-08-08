@@ -11,9 +11,9 @@ import java.util.Map;
 
 public abstract class ExpressionEvaluator implements Cloneable {
 
-    Map<Character, Operator> operators = new HashMap<>();
-    Map<String, Function> functions = new HashMap<>();
-    Map<String, BigDecimal> variables = new HashMap<>();
+    private final Map<Character, Operator> operators = new HashMap<>();
+    private final Map<String, Function> functions = new HashMap<>();
+    private final Map<String, BigDecimal> variables = new HashMap<>();
 
     public abstract BigDecimal evaluate(String expression);
 

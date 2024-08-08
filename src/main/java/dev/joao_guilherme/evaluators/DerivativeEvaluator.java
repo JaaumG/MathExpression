@@ -5,7 +5,11 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class DerivativeEvaluator {
+public abstract class DerivativeEvaluator {
+
+    private DerivativeEvaluator() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static BigDecimal derivate(ExpressionEvaluator expressionEvaluator, String function, String variable, BigDecimal x) {
         BigDecimal h = BigDecimalUtils.valueOf("1E-18");

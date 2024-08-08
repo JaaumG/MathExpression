@@ -9,6 +9,10 @@ import java.util.Deque;
 
 public abstract class OperationUtils {
 
+    private OperationUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void applyOperator(Operator lastOp, Deque<BigDecimal> values) {
         switch (lastOp) {
             case UnaryOperation uOp -> values.push(uOp.apply(values.pop()));

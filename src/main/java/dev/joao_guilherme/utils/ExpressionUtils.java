@@ -4,6 +4,10 @@ import dev.joao_guilherme.evaluators.ExpressionEvaluator;
 
 public abstract class ExpressionUtils {
 
+    private ExpressionUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static boolean isMinusSignNegation(String expression, int index, ExpressionEvaluator evaluator) {
         if (index == 0) {
             return true;
