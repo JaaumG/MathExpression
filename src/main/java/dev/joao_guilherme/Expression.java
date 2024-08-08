@@ -28,7 +28,7 @@ public class Expression {
     }
 
     public BigDecimal evaluate() {
-        return this.evaluator.evaluate(expression);
+        return BigDecimalUtils.removeScientificNotation(this.evaluator.evaluate(expression).stripTrailingZeros());
     }
 
     public BigDecimal solveForX() {
@@ -36,7 +36,7 @@ public class Expression {
     }
 
     public BigDecimal solveFor(String variable) {
-        return EquationEvaluator.solve(expression, variable, evaluator);
+        return BigDecimalUtils.removeScientificNotation(EquationEvaluator.solve(expression, variable, evaluator));
     }
 
     public BigDecimal derivativeForX(String x) {
