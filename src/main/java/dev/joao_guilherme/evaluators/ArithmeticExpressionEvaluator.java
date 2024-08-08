@@ -53,66 +53,25 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     @Override
     public BigDecimal evaluate(final String expressionToEvaluate) {
-        if (expressionToEvaluate == null) throw new IllegalArgumentException("Expression cannot be null");
-
-        currentIndex = 0;
-        ops = new ArrayDeque<>();
-        values = new ArrayDeque<>();
-        this.expression = expressionToEvaluate;
+        validateAndInitializeStack(expressionToEvaluate);
 
         while (currentIndex < expression.length()) {
             char c = expression.charAt(currentIndex);
 
             if (isOpeningBracket(c)) {
-                int j = getIndexClosingBracket(expression, currentIndex);
-                values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
-                currentIndex = j + 1;
-            } else if (isDigit(c) || (c == '-' && isMinusSignNegation(expression, currentIndex, this))) {
-                checkForImplicitMultiplication();
-                Matcher matcher = NUMBER_PATTERN.matcher(expression.substring(currentIndex));
-                if (matcher.find()) {
-                    String number = matcher.group();
-                    values.push(new BigDecimal(number));
-                    currentIndex += number.length();
-                }
+                solveInnerExpression();
+            } else if (isNumber(c)) {
+                getNumber();
             } else if (isOperator(c)) {
-                Operator op = getOperator(c);
-                if (op instanceof PercentageOperator pop) {
-                    this.percentageHandler(pop);
-                    currentIndex++;
-                    continue;
-                }
-                while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) applyOperator(ops.pop(), values);
-                ops.push(op);
-                currentIndex++;
+                getAndApplyOperator(c);
             } else if (isCharacter(c)) {
-                Matcher matcher = FUNCTION_PATTERN.matcher(expression.substring(currentIndex));
-                if (matcher.find()) {
-                    String string = matcher.group();
-                    if (isFunction(string)) {
-                        checkForImplicitMultiplication();
-                        currentIndex += string.length();
-                        if (currentIndex < expression.length() && isOpeningBracket(expression.charAt(currentIndex))) {
-                            BigDecimal result = FunctionUtils.evaluateFunction(this, expression, currentIndex - string.length(), currentIndex);
-                            values.push(result);
-                            currentIndex = getIndexClosingBracket(expression, currentIndex) + 1; // Move to the closing bracket index
-                        } else {
-                            throw new IllegalArgumentException("Invalid function: " + string);
-                        }
-                    } else if (isVariable(string)) {
-                        checkForImplicitMultiplication();
-                        currentIndex += string.length();
-                        values.push(getVariable(string));
-                    } else {
-                        throw new IllegalArgumentException("Invalid function: " + string);
-                    }
-                }
-            } else {
-                currentIndex++;
+                evaluateString();
             }
         }
 
-        while (!ops.isEmpty()) applyOperator(ops.pop(), values);
+        while (!ops.isEmpty()) {
+            applyOperator(ops.pop(), values);
+        }
 
         return values.pop().stripTrailingZeros();
     }
@@ -124,6 +83,93 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
     }
 
     protected void percentageHandler(PercentageOperator pop) {
+        if (pop == null) {
+            throw new IllegalArgumentException("Invalid percentage operator");
+        }
+        if (values.isEmpty()) {
+            throw new IllegalArgumentException("Invalid expression: " + expression);
+        }
         values.push(pop.apply(values.pop()));
+    }
+
+    private boolean isNumber(char c) {
+        return isDigit(c) || (c == '-' && isMinusSignNegation(expression, currentIndex, this));
+    }
+
+    private void validateAndInitializeStack(String expressionToEvaluate) {
+        if (expressionToEvaluate == null) {
+            throw new IllegalArgumentException("Expression cannot be null");
+        }
+        currentIndex = 0;
+        ops = new ArrayDeque<>();
+        values = new ArrayDeque<>();
+        this.expression = expressionToEvaluate;
+    }
+
+    private void solveInnerExpression() {
+        int j = getIndexClosingBracket(expression, currentIndex);
+        values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
+        currentIndex = j + 1;
+    }
+
+    private void getNumber() {
+        checkForImplicitMultiplication();
+        Matcher matcher = NUMBER_PATTERN.matcher(expression.substring(currentIndex));
+        if (matcher.find()) {
+            String number = matcher.group();
+            values.push(new BigDecimal(number));
+            currentIndex += number.length();
+        }
+    }
+
+    private void getAndApplyOperator(char c) {
+        Operator op = getOperator(c);
+        if (op instanceof PercentageOperator pop) {
+            this.percentageHandler(pop);
+        } else {
+            while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
+                applyOperator(ops.pop(), values);
+            }
+            ops.push(op);
+        }
+        currentIndex++;
+    }
+
+    private void evaluateString() {
+        Matcher matcher = FUNCTION_PATTERN.matcher(expression.substring(currentIndex));
+        if (matcher.find()) {
+            String string = matcher.group();
+            if (isFunction(string)) {
+                applyFunction(string);
+            } else if (isVariable(string)) {
+                getVariableValue(string);
+            } else {
+                throw new IllegalArgumentException("Invalid String: " + string);
+            }
+        }
+    }
+
+    private void getVariableValue(String string) {
+        if (string == null) {
+            throw new IllegalArgumentException("Invalid variable: " + string);
+        }
+        checkForImplicitMultiplication();
+        currentIndex += string.length();
+        values.push(getVariable(string));
+    }
+
+    private void applyFunction(String string) {
+        if (string == null) {
+            throw new IllegalArgumentException("Invalid function: " + string);
+        }
+        checkForImplicitMultiplication();
+        currentIndex += string.length();
+        if (currentIndex < expression.length() && isOpeningBracket(expression.charAt(currentIndex))) {
+            BigDecimal result = FunctionUtils.evaluateFunction(this, expression, currentIndex - string.length(), currentIndex);
+            values.push(result);
+            currentIndex = getIndexClosingBracket(expression, currentIndex) + 1; // Move to the closing bracket index
+        } else {
+            throw new IllegalArgumentException("Invalid function: " + string);
+        }
     }
 }
