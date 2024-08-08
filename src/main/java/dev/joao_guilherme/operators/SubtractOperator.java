@@ -8,7 +8,7 @@ public class SubtractOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return BigDecimalUtils.subtract(b,a);
+        return BigDecimalUtils.subtract(b, a);
     }
 
     @Override

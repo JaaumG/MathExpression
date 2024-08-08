@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class FactorialOperator implements UnaryOperation{
+public class FactorialOperator implements UnaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a) {
