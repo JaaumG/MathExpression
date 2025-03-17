@@ -77,7 +77,38 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
     }
 
     protected void checkForImplicitMultiplication() {
-        if ((currentIndex > 0 && (isDigit(expression.charAt(currentIndex - 1)) || isClosingBracket(expression.charAt(currentIndex - 1)))) || (expression.length() > currentIndex + 1 && isOpeningBracket(expression.charAt(currentIndex + 1)))) {
+        int nextCharacterIndex = currentIndex + 1;
+        int previousCharacterIndex = currentIndex - 1;
+
+        boolean isNotFirstCharacter = currentIndex > 0;
+        boolean isNotLastCharacter = expression.length() > nextCharacterIndex;
+
+        boolean isPreviousCharacterDigit = false;
+        boolean isPreviousCharacterClosingBracket = false;
+
+        if (isNotFirstCharacter) {
+            isPreviousCharacterDigit = isDigit(expression.charAt(previousCharacterIndex));
+            isPreviousCharacterClosingBracket = isClosingBracket(expression.charAt(previousCharacterIndex));
+        }
+
+
+        boolean isNextCharacterOpeningBracket = false;
+        boolean isNextCharacterDigit = false;
+
+        if (isNotLastCharacter) {
+            isNextCharacterOpeningBracket = isOpeningBracket(expression.charAt(nextCharacterIndex));
+            isNextCharacterDigit = isDigit(expression.charAt(nextCharacterIndex));
+        }
+
+        if (isNextCharacterDigit) {
+            Matcher matcher = NUMBER_PATTERN.matcher(expression.substring(currentIndex));
+            if (matcher.find()) {
+                String number = matcher.group();
+                boolean isWithinString = currentIndex + number.length() < expression.length();
+                isNextCharacterOpeningBracket = isWithinString && isOpeningBracket(expression.charAt(currentIndex + number.length()));
+            }
+        }
+        if (isPreviousCharacterDigit || isPreviousCharacterClosingBracket || isNextCharacterOpeningBracket) {
             ops.push(new MultiplyOperator());
         }
     }
