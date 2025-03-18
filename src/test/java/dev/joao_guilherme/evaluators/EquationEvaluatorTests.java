@@ -1,9 +1,10 @@
 import dev.joao_guilherme.Expression;
 import dev.joao_guilherme.utils.BigDecimalUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +18,6 @@ class EquationEvaluatorTests {
     }
 
     @Test
-    @Disabled("Need to fix")
     @DisplayName("Basic subtraction")
     void testBasicSubtraction() {
         Expression expression = new Expression("x - 3 = 7");
@@ -39,7 +39,6 @@ class EquationEvaluatorTests {
     }
 
     @Test
-    @Disabled("Need to fix")
     @DisplayName("Complex equation with addition and subtraction")
     void testComplexAdditionSubtraction() {
         Expression expression = new Expression("2 + x - 3 = 7");
@@ -54,7 +53,6 @@ class EquationEvaluatorTests {
     }
 
     @Test
-    @Disabled("Need to fix")
     @DisplayName("Complex equation with division and subtraction")
     void testComplexDivisionSubtraction() {
         Expression expression = new Expression("x / 2 - 3 = 5");
@@ -62,11 +60,10 @@ class EquationEvaluatorTests {
     }
 
     @Test
-    @Disabled("Need to fix")
     @DisplayName("Complex equation with multiple operations")
     void testMultipleOperations() {
         Expression expression = new Expression("2 * x + 3 - x / 2 = 10");
-        assertEquals(BigDecimalUtils.valueOf(4.7), expression.solveForX());
+        assertEquals(BigDecimalUtils.divide(BigDecimal.valueOf(14L), BigDecimal.valueOf(3L)), expression.solveForX());
     }
 
     @Test
