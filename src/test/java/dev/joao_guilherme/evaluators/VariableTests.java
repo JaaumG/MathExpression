@@ -1,5 +1,6 @@
+package dev.joao_guilherme.evaluators;
+
 import dev.joao_guilherme.Expression;
-import dev.joao_guilherme.evaluators.PercentageBasedAdditionEvaluator;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

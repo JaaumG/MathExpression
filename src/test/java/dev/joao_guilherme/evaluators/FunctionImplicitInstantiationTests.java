@@ -1,3 +1,5 @@
+package dev.joao_guilherme.evaluators;
+
 import dev.joao_guilherme.Expression;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 import org.junit.jupiter.api.DisplayName;
