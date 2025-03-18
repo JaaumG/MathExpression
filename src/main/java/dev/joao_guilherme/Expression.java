@@ -1,10 +1,7 @@
 package dev.joao_guilherme;
 
 
-import dev.joao_guilherme.evaluators.ArithmeticExpressionEvaluator;
-import dev.joao_guilherme.evaluators.DerivativeEvaluator;
-import dev.joao_guilherme.evaluators.EquationEvaluator;
-import dev.joao_guilherme.evaluators.ExpressionEvaluator;
+import dev.joao_guilherme.evaluators.*;
 import dev.joao_guilherme.functions.Function;
 import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.UnaryOperation;
@@ -63,6 +60,45 @@ public class Expression {
         return DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x));
     }
 
+    public BigDecimal integrateForX(BigDecimal lowerBound, BigDecimal upperBound) {
+        return integrateForX(lowerBound, upperBound, 1000);
+    }
+
+    public BigDecimal integrateForX(BigDecimal lowerBound, BigDecimal upperBound, int segments) {
+        return integrate("x", lowerBound, upperBound, segments);
+    }
+
+    public BigDecimal integrateForX(String lowerBound, String upperBound) {
+        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
+
+    public BigDecimal integrateForX(double lowerBound, double upperBound) {
+        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
+
+    public BigDecimal integrateForX(long lowerBound, long upperBound) {
+        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
+
+    public BigDecimal integrate(String variable, BigDecimal lowerBound, BigDecimal upperBound) {
+        return integrate(variable, lowerBound, upperBound, 1000);
+    }
+
+    public BigDecimal integrate(String variable, BigDecimal lowerBound, BigDecimal upperBound, int segments) {
+        return IntegralEvaluator.integrate(evaluator, expression, variable, lowerBound, upperBound, segments);
+    }
+
+    public BigDecimal integrate(String variable, String lowerBound, String upperBound) {
+        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
+
+    public BigDecimal integrate(String variable, double lowerBound, double upperBound) {
+        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
+
+    public BigDecimal integrate(String variable, long lowerBound, long upperBound) {
+        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+    }
 
     public String getExpression() {
         return expression;
