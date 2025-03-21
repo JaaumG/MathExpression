@@ -128,7 +128,7 @@ public abstract class BigDecimalUtils {
     }
 
     public static BigDecimal removeScientificNotation(BigDecimal a) {
-        return new BigDecimal(a.toPlainString());
+        return new BigDecimal(a.stripTrailingZeros().toPlainString());
     }
 
     public static BigDecimal max(BigDecimal... values) {
