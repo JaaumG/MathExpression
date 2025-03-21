@@ -2,7 +2,9 @@ package dev.joao_guilherme;
 
 
 import dev.joao_guilherme.evaluators.*;
-import dev.joao_guilherme.functions.Function;
+import dev.joao_guilherme.functions.BinaryFunction;
+import dev.joao_guilherme.functions.UnaryFunction;
+import dev.joao_guilherme.functions.VarArgsFunction;
 import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.UnaryOperation;
 import dev.joao_guilherme.utils.BigDecimalUtils;
@@ -104,7 +106,17 @@ public class Expression {
         return expression;
     }
 
-    public Expression withFunction(String function, Function functionImpl) {
+    public Expression withVarArgsFunction(String function, VarArgsFunction functionImpl) {
+        evaluator.addFunction(function, functionImpl);
+        return this;
+    }
+
+    public Expression withFunction(String function, UnaryFunction functionImpl) {
+        evaluator.addFunction(function, functionImpl);
+        return this;
+    }
+
+    public Expression withFunction(String function, BinaryFunction functionImpl) {
         evaluator.addFunction(function, functionImpl);
         return this;
     }
