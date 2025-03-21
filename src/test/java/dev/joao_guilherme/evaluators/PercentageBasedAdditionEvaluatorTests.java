@@ -354,8 +354,7 @@ class PercentageBasedAdditionEvaluatorTests {
     @Test
     @DisplayName("Mixing percentage symbols with percentage words")
     void mixingPercentageSymbolsWithPercentageWords() {
-        Expression expression = new Expression("50% + percent(30)", new PercentageBasedAdditionEvaluator())
-                .withFunction("percent", args -> args[0].divide(BigDecimal.valueOf(100)));
+        Expression expression = new Expression("50% + percent(30)", new PercentageBasedAdditionEvaluator()).withFunction("percent", a -> a.divide(BigDecimal.valueOf(100)));
         assertEquals(BigDecimal.valueOf(0.8), expression.evaluate());
     }
 
