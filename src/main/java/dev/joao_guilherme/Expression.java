@@ -49,15 +49,15 @@ public class Expression {
     }
 
     public BigDecimal derivate(String variable, String x) {
-        return DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x));
+        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
     }
 
     public BigDecimal derivate(String variable, long x) {
-        return DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x));
+        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
     }
 
     public BigDecimal derivate(String variable, double x) {
-        return DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x));
+        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
     }
 
     public BigDecimal integrateForX(BigDecimal lowerBound, BigDecimal upperBound) {
@@ -85,7 +85,7 @@ public class Expression {
     }
 
     public BigDecimal integrate(String variable, BigDecimal lowerBound, BigDecimal upperBound, int segments) {
-        return IntegralEvaluator.integrate(evaluator, expression, variable, lowerBound, upperBound, segments);
+        return BigDecimalUtils.removeScientificNotation(IntegralEvaluator.integrate(evaluator, expression, variable, lowerBound, upperBound, segments));
     }
 
     public BigDecimal integrate(String variable, String lowerBound, String upperBound) {
