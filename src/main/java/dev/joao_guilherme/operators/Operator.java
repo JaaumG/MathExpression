@@ -13,7 +13,7 @@ public interface Operator {
     }
 
     default boolean hasHigherPrecedence(Operator operator) {
-        return this.getPrecedence() > operator.getPrecedence();
+        return this.getPrecedence() >= operator.getPrecedence();
     }
 
     default BigDecimal apply(BigDecimal a, BigDecimal b) {
