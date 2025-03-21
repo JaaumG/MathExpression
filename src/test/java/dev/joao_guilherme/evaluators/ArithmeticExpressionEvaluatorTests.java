@@ -505,11 +505,10 @@ class ArithmeticExpressionEvaluatorTests {
     }
 
     @Test
-    @Disabled("Need to throw exception, no validation is in function right now")
     @DisplayName("Functions with missing arguments should throw exception")
     void functionsWithMissingArgumentsShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> new Expression("sin()"));
-        assertThrows(IllegalArgumentException.class, () -> new Expression("log()"));
+        assertThrows(IllegalArgumentException.class, () -> new Expression("sin()").evaluate());
+        assertThrows(IllegalArgumentException.class, () -> new Expression("log()").evaluate());
     }
 
     @Test
