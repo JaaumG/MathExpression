@@ -4,9 +4,9 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class RoundFunction implements Function {
+public class RoundFunction implements UnaryFunction {
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        return BigDecimalUtils.round(args[0]);
+    public BigDecimal apply(BigDecimal a) {
+        return BigDecimalUtils.round(a);
     }
 }

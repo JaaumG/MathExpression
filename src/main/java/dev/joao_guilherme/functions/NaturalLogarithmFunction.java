@@ -4,10 +4,10 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class NaturalLogarithmFunction implements Function {
+public class NaturalLogarithmFunction implements UnaryFunction {
 
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        return BigDecimalUtils.ln(args[0]);
+    public BigDecimal apply(BigDecimal a) {
+        return BigDecimalUtils.ln(a);
     }
 }

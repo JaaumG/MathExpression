@@ -4,10 +4,10 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class FloorFunction implements Function {
+public class FloorFunction implements UnaryFunction {
 
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        return BigDecimalUtils.floor(args[0]);
+    public BigDecimal apply(BigDecimal a) {
+        return BigDecimalUtils.floor(a);
     }
 }

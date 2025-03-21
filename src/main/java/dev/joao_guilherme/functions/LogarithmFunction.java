@@ -4,7 +4,12 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class LogarithmFunction implements Function {
+public class LogarithmFunction implements VarArgsFunction {
+
+    @Override
+    public int maxArgs() {
+        return 2;
+    }
 
     @Override
     public BigDecimal apply(BigDecimal... args) {

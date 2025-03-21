@@ -4,10 +4,10 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class CeilFunction implements Function {
+public class CeilFunction implements UnaryFunction {
 
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        return BigDecimalUtils.ceil(args[0]);
+    public BigDecimal apply(BigDecimal a) {
+        return BigDecimalUtils.ceil(a);
     }
 }

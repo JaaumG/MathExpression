@@ -4,10 +4,10 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class SquareRootFunction implements Function {
+public class SquareRootFunction implements UnaryFunction {
 
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        return BigDecimalUtils.sqrt(args[0]);
+    public BigDecimal apply(BigDecimal a) {
+        return BigDecimalUtils.sqrt(a);
     }
 }

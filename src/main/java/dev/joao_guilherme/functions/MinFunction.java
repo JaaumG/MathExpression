@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class MinFunction implements Function {
+public class MinFunction implements VarArgsFunction {
 
     @Override
     public BigDecimal apply(BigDecimal... args) {
