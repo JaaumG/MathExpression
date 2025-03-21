@@ -61,6 +61,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     @Override
     public BigDecimal evaluate(final String expressionToEvaluate) {
+        if (expressionToEvaluate == null || expressionToEvaluate.isEmpty()) {
+            throw new IllegalArgumentException("Expression cannot be null or empty");
+        }
         validateAndInitializeStack(expressionToEvaluate);
 
         while (currentIndex < expression.length()) {
