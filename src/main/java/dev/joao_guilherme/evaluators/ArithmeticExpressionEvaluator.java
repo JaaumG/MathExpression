@@ -1,9 +1,7 @@
 package dev.joao_guilherme.evaluators;
 
 import dev.joao_guilherme.functions.*;
-import dev.joao_guilherme.functions.trigonometric.CosFunction;
-import dev.joao_guilherme.functions.trigonometric.SinFunction;
-import dev.joao_guilherme.functions.trigonometric.TanFunction;
+import dev.joao_guilherme.functions.trigonometric.*;
 import dev.joao_guilherme.operators.*;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 import dev.joao_guilherme.utils.FunctionUtils;
@@ -36,9 +34,19 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         addFunction("sin", new SinFunction());
         addFunction("cos", new CosFunction());
         addFunction("tan", new TanFunction());
+        addFunction("sinh", new HyperbolicSinFunction());
+        addFunction("cosh", new HyperbolicCosFunction());
+        addFunction("tanh", new HyperbolicTanFunction());
+        addFunction("asin", new InverseSinFunction());
+        addFunction("acos", new InverseCosFunction());
+        addFunction("atan", new InverseTanFunction());
         addFunction("abs", new AbsoluteFunction());
         addFunction("ceil", new CeilFunction());
         addFunction("floor", new FloorFunction());
+        addFunction("sign", new SignFunction());
+        addFunction("max", new MaxFunction());
+        addFunction("min", new MinFunction());
+        addFunction("round", new RoundFunction());
 
         addOperator(new AdditionOperator());
         addOperator(new SubtractOperator());

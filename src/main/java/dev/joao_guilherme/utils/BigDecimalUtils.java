@@ -80,12 +80,39 @@ public abstract class BigDecimalUtils {
         return BigDecimalMath.sin(arg, mathContext);
     }
 
+    public static BigDecimal asin(BigDecimal arg) {
+        return BigDecimalMath.asin(arg, mathContext);
+    }
+
+    public static BigDecimal sinh(BigDecimal arg) {
+        return BigDecimalMath.sinh(arg, mathContext);
+    }
+
     public static BigDecimal cos(BigDecimal arg) {
         return BigDecimalMath.cos(arg, mathContext);
     }
 
+    public static BigDecimal acos(BigDecimal arg) {
+        if (arg.compareTo(BigDecimal.ONE) == 0) {
+            return BigDecimal.ZERO;
+        }
+        return BigDecimalMath.acos(arg, mathContext);
+    }
+
+    public static BigDecimal cosh(BigDecimal arg) {
+        return BigDecimalMath.cosh(arg, mathContext);
+    }
+
     public static BigDecimal tan(BigDecimal arg) {
         return BigDecimalMath.tan(arg, mathContext);
+    }
+
+    public static BigDecimal atan(BigDecimal arg) {
+        return BigDecimalMath.atan(arg, mathContext);
+    }
+
+    public static BigDecimal tanh(BigDecimal arg) {
+        return BigDecimalMath.tanh(arg, mathContext);
     }
 
     public static BigDecimal abs(BigDecimal a) {
@@ -102,5 +129,33 @@ public abstract class BigDecimalUtils {
 
     public static BigDecimal removeScientificNotation(BigDecimal a) {
         return new BigDecimal(a.toPlainString());
+    }
+
+    public static BigDecimal max(BigDecimal... values) {
+        BigDecimal max = values[0];
+        for (BigDecimal value : values) {
+            if (value.compareTo(max) > 0) {
+                max = value;
+            }
+        }
+        return max;
+    }
+
+    public static BigDecimal min(BigDecimal... values) {
+        BigDecimal min = values[0];
+        for (BigDecimal value : values) {
+            if (value.compareTo(min) < 0) {
+                min = value;
+            }
+        }
+        return min;
+    }
+
+    public static BigDecimal round(BigDecimal value) {
+        return value.setScale(0, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal mod(BigDecimal a, BigDecimal b) {
+        return a.remainder(b, mathContext);
     }
 }
