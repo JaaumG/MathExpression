@@ -8,6 +8,9 @@ public class LogarithmFunction implements Function {
 
     @Override
     public BigDecimal apply(BigDecimal... args) {
+        if (args.length == 1) {
+            return BigDecimalUtils.log(args[0], BigDecimal.TEN);
+        }
         return BigDecimalUtils.log(args[0], args[1]);
     }
 }
