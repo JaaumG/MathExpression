@@ -17,10 +17,10 @@ public interface Operator {
     }
 
     default BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return BigDecimal.ZERO;
+        throw new IllegalArgumentException("This operator does not support binary operations");
     }
 
     default BigDecimal apply(BigDecimal a) {
-        return BigDecimal.ZERO;
+        throw new IllegalArgumentException("This operator does not support unary operations");
     }
 }
