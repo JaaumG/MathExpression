@@ -1,11 +1,19 @@
 package dev.joao_guilherme.functions;
 
-import java.math.BigDecimal;
 
 @FunctionalInterface
-public non-sealed interface UnaryFunction extends Function {
+public interface UnaryFunction<T> extends Function<T> {
 
     @Override
-    BigDecimal apply(BigDecimal a);
+    T apply(T a);
 
+    @Override
+    default int minArgs() {
+        return 1;
+    }
+
+    @Override
+    default int maxArgs() {
+        return 1;
+    }
 }

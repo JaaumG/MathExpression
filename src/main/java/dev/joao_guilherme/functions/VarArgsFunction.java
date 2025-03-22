@@ -1,11 +1,10 @@
 package dev.joao_guilherme.functions;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @FunctionalInterface
-public non-sealed interface VarArgsFunction extends Function {
+public interface VarArgsFunction<T> extends Function<T> {
 
     @Override
-    BigDecimal apply(BigDecimal... args);
-
+    T apply(List<T> args);
 }

@@ -1,10 +1,18 @@
 package dev.joao_guilherme.functions;
 
-import java.math.BigDecimal;
-
 @FunctionalInterface
-public non-sealed interface BinaryFunction extends Function {
+public interface BinaryFunction<T> extends Function<T> {
 
     @Override
-    BigDecimal apply(BigDecimal a, BigDecimal b);
+    T apply(T a, T b);
+
+    @Override
+    default int minArgs() {
+        return 2;
+    }
+
+    @Override
+    default int maxArgs() {
+        return 2;
+    }
 }
