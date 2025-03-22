@@ -1,8 +1,6 @@
 package dev.joao_guilherme.operators;
 
-import java.math.BigDecimal;
-
-public interface Operator {
+public interface Operator<T> {
 
     default int getPrecedence() {
         return 0;
@@ -12,15 +10,15 @@ public interface Operator {
         return ' ';
     }
 
-    default boolean hasHigherPrecedence(Operator operator) {
+    default boolean hasHigherPrecedence(Operator<T> operator) {
         return this.getPrecedence() >= operator.getPrecedence();
     }
 
-    default BigDecimal apply(BigDecimal a, BigDecimal b) {
+    default T apply(T a, T b) {
         throw new IllegalArgumentException("This operator does not support binary operations");
     }
 
-    default BigDecimal apply(BigDecimal a) {
+    default T apply(T a) {
         throw new IllegalArgumentException("This operator does not support unary operations");
     }
 }
