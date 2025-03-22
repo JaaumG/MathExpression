@@ -1,8 +1,8 @@
 package dev.joao_guilherme.functions;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-public sealed interface Function permits UnaryFunction, BinaryFunction, VarArgsFunction {
+public interface Function<T> {
 
     default int minArgs() {
         return 0;
@@ -12,21 +12,21 @@ public sealed interface Function permits UnaryFunction, BinaryFunction, VarArgsF
         return Integer.MAX_VALUE;
     }
 
-    default BigDecimal apply(BigDecimal a) {
+    default T apply(T a) {
         throw new IllegalArgumentException("Invalid number of arguments: 1");
     }
 
-    default BigDecimal apply(BigDecimal a, BigDecimal b) {
+    default T apply(T a, T b) {
         throw new IllegalArgumentException("Invalid number of arguments: 2");
     }
 
-    default BigDecimal apply(BigDecimal... args) {
-        if (args.length == 1) {
-            return apply(args[0]);
-        } else if (args.length == 2) {
-            return apply(args[0], args[1]);
+    default T apply(List<T> args) {
+        if (args.size() == 1) {
+            return apply(args.getFirst());
+        } else if (args.size() == 2) {
+            return apply(args.getFirst(), args.getLast());
         } else {
-            throw new IllegalArgumentException("Invalid number of arguments: " + args.length);
+            throw new IllegalArgumentException("Invalid number of arguments: " + args.size());
         }
     }
 
