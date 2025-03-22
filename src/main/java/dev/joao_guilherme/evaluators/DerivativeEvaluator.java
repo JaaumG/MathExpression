@@ -11,10 +11,10 @@ public abstract class DerivativeEvaluator {
         throw new IllegalStateException("Utility class");
     }
 
-    public static BigDecimal derivate(ExpressionEvaluator expressionEvaluator, String function, String variable, BigDecimal x) {
+    public static BigDecimal derivate(ExpressionEvaluator<BigDecimal> expressionEvaluator, String function, String variable, BigDecimal x) {
         BigDecimal h = BigDecimalUtils.valueOf("1E-18");
-        BigDecimal fX = new Expression(function, expressionEvaluator).withVariable(variable, x).evaluate(); // f(x)
-        BigDecimal fXPlusH = new Expression(function, expressionEvaluator).withVariable(variable, BigDecimalUtils.add(x, h)).evaluate(); // f(x+h)
+        BigDecimal fX = new Expression<>(function, expressionEvaluator).withVariable(variable, x).evaluate(); // f(x)
+        BigDecimal fXPlusH = new Expression<>(function, expressionEvaluator).withVariable(variable, BigDecimalUtils.add(x, h)).evaluate(); // f(x+h)
         return BigDecimalUtils.divide(BigDecimalUtils.subtract(fXPlusH, fX), h); // (f(x+h) - f(x)) / h
     }
 }

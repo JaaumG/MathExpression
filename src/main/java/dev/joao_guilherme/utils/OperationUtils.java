@@ -4,7 +4,6 @@ import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.Operator;
 import dev.joao_guilherme.operators.UnaryOperation;
 
-import java.math.BigDecimal;
 import java.util.Deque;
 
 public abstract class OperationUtils {
@@ -13,10 +12,10 @@ public abstract class OperationUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void applyOperator(Operator lastOp, Deque<BigDecimal> values) {
+    public static <T> void applyOperator(Operator<T> lastOp, Deque<T> values, T defaultValue) {
         switch (lastOp) {
-            case UnaryOperation uOp -> values.push(uOp.apply(values.pop()));
-            case BinaryOperation bOp -> values.push(bOp.apply(values.pop(), values.isEmpty() ? BigDecimal.ZERO : values.pop()));
+            case UnaryOperation<T> uOp -> values.push(uOp.apply(values.pop()));
+            case BinaryOperation<T> bOp -> values.push(bOp.apply(values.pop(), values.isEmpty() ? defaultValue : values.pop()));
             default -> throw new IllegalStateException("Unexpected value: " + lastOp);
         }
     }

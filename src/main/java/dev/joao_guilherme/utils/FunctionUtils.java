@@ -3,7 +3,6 @@ package dev.joao_guilherme.utils;
 import dev.joao_guilherme.evaluators.ExpressionEvaluator;
 import dev.joao_guilherme.functions.Function;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,17 +15,17 @@ public abstract class FunctionUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static BigDecimal evaluateFunction(ExpressionEvaluator evaluator, String expression, int start, int i) {
+    public static <T> T evaluateFunction(ExpressionEvaluator<T> evaluator, String expression, int start, int i) {
         int j = getIndexClosingBracket(expression, i);
         String innerExpression = expression.substring(i + 1, j);
-        Function func = evaluator.getFunction(expression.substring(start, i));
+        Function<T> func = evaluator.getFunction(expression.substring(start, i));
 
         if (innerExpression.contains(",")) {
             String[] parts = splitPreservingGroups(innerExpression);
-            BigDecimal[] args = Arrays.stream(parts).map(evaluator.newInstance()::evaluate).toArray(BigDecimal[]::new);
+            List<T> args = Arrays.stream(parts).map(evaluator.newInstance()::evaluate).toList();
             return applyFunction(func, args);
         } else {
-            return applyFunction(func, evaluator.newInstance().evaluate(innerExpression));
+            return applyFunction(func, List.of(evaluator.newInstance().evaluate(innerExpression)));
         }
     }
 
@@ -60,7 +59,7 @@ public abstract class FunctionUtils {
         return result.toArray(new String[0]);
     }
 
-    public static BigDecimal applyFunction(Function function, BigDecimal... args) {
+    public static <T> T applyFunction(Function<T> function, List<T> args) {
         return function.apply(args);
     }
 }
