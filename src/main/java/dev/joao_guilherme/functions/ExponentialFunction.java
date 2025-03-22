@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class ExponentialFunction implements UnaryFunction {
+public class ExponentialFunction implements UnaryFunction<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a) {

@@ -3,7 +3,7 @@ package dev.joao_guilherme.operators;
 import java.math.BigDecimal;
 import java.util.Deque;
 
-public class PercentageOperator implements UnaryOperation {
+public class PercentageOperator implements UnaryOperation<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a) {
@@ -20,7 +20,7 @@ public class PercentageOperator implements UnaryOperation {
         return '%';
     }
 
-    public void applyImplicitPercentageOperator(Deque<BigDecimal> values, Deque<Operator> ops) {
+    public void applyImplicitPercentageOperator(Deque<BigDecimal> values, Deque<Operator<BigDecimal>> ops) {
         if (ops.isEmpty()) {
             if (values.peek().compareTo(BigDecimal.ZERO) > 0) {
                 values.push(apply(values.pop()));

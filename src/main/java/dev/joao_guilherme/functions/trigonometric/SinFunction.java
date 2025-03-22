@@ -5,7 +5,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class SinFunction implements UnaryFunction {
+public class SinFunction implements UnaryFunction<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a) {

@@ -2,7 +2,7 @@ package dev.joao_guilherme.functions;
 
 import java.math.BigDecimal;
 
-public class SignFunction implements UnaryFunction {
+public class SignFunction implements UnaryFunction<BigDecimal> {
     @Override
     public BigDecimal apply(BigDecimal a) {
         var value = a.stripTrailingZeros();

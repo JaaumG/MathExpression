@@ -5,7 +5,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class HyperbolicCosFunction implements UnaryFunction {
+public class HyperbolicCosFunction implements UnaryFunction<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a) {

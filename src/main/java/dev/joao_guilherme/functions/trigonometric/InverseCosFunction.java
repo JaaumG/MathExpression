@@ -5,7 +5,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class InverseCosFunction implements UnaryFunction {
+public class InverseCosFunction implements UnaryFunction<BigDecimal> {
     @Override
     public BigDecimal apply(BigDecimal a) {
         return BigDecimalUtils.acos(a);

@@ -5,7 +5,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class TanFunction implements UnaryFunction {
+public class TanFunction implements UnaryFunction<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a) {

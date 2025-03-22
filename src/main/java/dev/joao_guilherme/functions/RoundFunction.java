@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class RoundFunction implements UnaryFunction {
+public class RoundFunction implements UnaryFunction<BigDecimal> {
     @Override
     public BigDecimal apply(BigDecimal a) {
         return BigDecimalUtils.round(a);

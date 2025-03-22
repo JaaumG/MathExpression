@@ -3,8 +3,9 @@ package dev.joao_guilherme.functions;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-public class LogarithmFunction implements VarArgsFunction {
+public class LogarithmFunction implements VarArgsFunction<BigDecimal> {
 
     @Override
     public int maxArgs() {
@@ -12,10 +13,10 @@ public class LogarithmFunction implements VarArgsFunction {
     }
 
     @Override
-    public BigDecimal apply(BigDecimal... args) {
-        if (args.length == 1) {
-            return BigDecimalUtils.log(args[0], BigDecimal.TEN);
+    public BigDecimal apply(List<BigDecimal> args) {
+        if (args.size() == 1) {
+            return BigDecimalUtils.log(args.getFirst(), BigDecimal.TEN);
         }
-        return BigDecimalUtils.log(args[0], args[1]);
+        return BigDecimalUtils.log(args.getFirst(), args.getLast());
     }
 }

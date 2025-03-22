@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class ExponentialOperator implements BinaryOperation {
+public class ExponentialOperator implements BinaryOperation<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {

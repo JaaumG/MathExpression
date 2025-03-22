@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 import static dev.joao_guilherme.utils.ExpressionUtils.*;
 import static dev.joao_guilherme.utils.OperationUtils.applyOperator;
 
-public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
+public class ArithmeticExpressionEvaluator extends ExpressionEvaluator<BigDecimal> {
 
     protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
     protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z0-9]+");
     protected Deque<BigDecimal> values = new ArrayDeque<>();
-    protected Deque<Operator> ops = new ArrayDeque<>();
+    protected Deque<Operator<BigDecimal>> ops = new ArrayDeque<>();
     protected int currentIndex = 0;
     protected String expression;
 
@@ -81,10 +81,10 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         }
 
         while (!ops.isEmpty()) {
-            applyOperator(ops.pop(), values);
+            applyOperator(ops.pop(), values, BigDecimal.ZERO);
         }
 
-        return values.pop().stripTrailingZeros();
+        return BigDecimalUtils.removeScientificNotation(values.pop().stripTrailingZeros());
     }
 
     protected void checkForImplicitMultiplication() {
@@ -165,12 +165,12 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
     }
 
     private void getAndApplyOperator(char c) {
-        Operator op = getOperator(c);
+        Operator<BigDecimal> op = getOperator(c);
         if (op instanceof PercentageOperator pop) {
             this.percentageHandler(pop);
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
-                applyOperator(ops.pop(), values);
+                applyOperator(ops.pop(), values, BigDecimal.ZERO);
             }
             ops.push(op);
         }

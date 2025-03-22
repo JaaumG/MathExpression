@@ -4,7 +4,7 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class NthRootFunction implements BinaryFunction {
+public class NthRootFunction implements BinaryFunction<BigDecimal> {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {

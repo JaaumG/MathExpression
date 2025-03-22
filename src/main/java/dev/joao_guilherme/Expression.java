@@ -1,6 +1,5 @@
 package dev.joao_guilherme;
 
-
 import dev.joao_guilherme.evaluators.*;
 import dev.joao_guilherme.functions.BinaryFunction;
 import dev.joao_guilherme.functions.UnaryFunction;
@@ -11,23 +10,23 @@ import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
 
-public class Expression {
+public class Expression<T> {
 
     private final String expression;
-    private final ExpressionEvaluator evaluator;
+    private final ExpressionEvaluator<T> evaluator;
 
-    public Expression(String expression) {
-        this(expression, new ArithmeticExpressionEvaluator());
-    }
-
-    public Expression(String expression, ExpressionEvaluator evaluator) {
+    public Expression(String expression, ExpressionEvaluator<T> evaluator) {
         if (expression == null) throw new IllegalArgumentException("Expression cannot be null");
         this.expression = expression.replaceAll("\\s+", "");
         this.evaluator = evaluator;
     }
 
-    public BigDecimal evaluate() {
-        return BigDecimalUtils.removeScientificNotation(this.evaluator.evaluate(expression).stripTrailingZeros());
+    public static Expression<BigDecimal> ofBigDecimal(String expression) {
+        return new Expression<>(expression, new ArithmeticExpressionEvaluator());
+    }
+
+    public T evaluate() {
+        return evaluator.evaluate(expression);
     }
 
     public BigDecimal solveForX() {
@@ -35,128 +34,85 @@ public class Expression {
     }
 
     public BigDecimal solveFor(String variable) {
-        return BigDecimalUtils.removeScientificNotation(EquationEvaluator.solve(expression, variable, evaluator));
+        return BigDecimalUtils.removeScientificNotation(EquationEvaluator.solve(expression, variable, (ExpressionEvaluator<BigDecimal>) evaluator));
     }
 
-    public BigDecimal derivativeForX(String x) {
+    public BigDecimal derivativeForX(BigDecimal x) {
         return derivate("x", x);
     }
 
     public BigDecimal derivativeForX(long x) {
-        return derivate("x", x);
+        return derivate("x", BigDecimal.valueOf(x));
     }
 
     public BigDecimal derivativeForX(double x) {
-        return derivate("x", x);
+        return derivate("x", BigDecimal.valueOf(x));
     }
 
-    public BigDecimal derivate(String variable, String x) {
-        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
-    }
-
-    public BigDecimal derivate(String variable, long x) {
-        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
-    }
-
-    public BigDecimal derivate(String variable, double x) {
-        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate(evaluator, expression, variable, BigDecimalUtils.valueOf(x)));
+    public BigDecimal derivate(String variable, BigDecimal x) {
+        return BigDecimalUtils.removeScientificNotation(DerivativeEvaluator.derivate((ExpressionEvaluator<BigDecimal>) evaluator, expression, variable, x));
     }
 
     public BigDecimal integrateForX(BigDecimal lowerBound, BigDecimal upperBound) {
         return integrateForX(lowerBound, upperBound, 1000);
     }
 
+    public BigDecimal integrateForX(long lowerBound, long upperBound) {
+        return integrateForX(BigDecimal.valueOf(lowerBound), BigDecimal.valueOf(upperBound), 1000);
+    }
+
+    public BigDecimal integrateForX(double lowerBound, double upperBound) {
+        return integrateForX(BigDecimal.valueOf(lowerBound), BigDecimal.valueOf(upperBound), 1000);
+    }
+
     public BigDecimal integrateForX(BigDecimal lowerBound, BigDecimal upperBound, int segments) {
         return integrate("x", lowerBound, upperBound, segments);
     }
 
-    public BigDecimal integrateForX(String lowerBound, String upperBound) {
-        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
-    }
-
-    public BigDecimal integrateForX(double lowerBound, double upperBound) {
-        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
-    }
-
-    public BigDecimal integrateForX(long lowerBound, long upperBound) {
-        return integrate("x", BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
-    }
-
-    public BigDecimal integrate(String variable, BigDecimal lowerBound, BigDecimal upperBound) {
-        return integrate(variable, lowerBound, upperBound, 1000);
-    }
-
     public BigDecimal integrate(String variable, BigDecimal lowerBound, BigDecimal upperBound, int segments) {
-        return BigDecimalUtils.removeScientificNotation(IntegralEvaluator.integrate(evaluator, expression, variable, lowerBound, upperBound, segments));
-    }
-
-    public BigDecimal integrate(String variable, String lowerBound, String upperBound) {
-        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
-    }
-
-    public BigDecimal integrate(String variable, double lowerBound, double upperBound) {
-        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
-    }
-
-    public BigDecimal integrate(String variable, long lowerBound, long upperBound) {
-        return integrate(variable, BigDecimalUtils.valueOf(lowerBound), BigDecimalUtils.valueOf(upperBound));
+        return BigDecimalUtils.removeScientificNotation(IntegralEvaluator.integrate((ExpressionEvaluator<BigDecimal>) evaluator, expression, variable, lowerBound, upperBound, segments).stripTrailingZeros());
     }
 
     public String getExpression() {
         return expression;
     }
 
-    public Expression withVarArgsFunction(String function, VarArgsFunction functionImpl) {
-        evaluator.addFunction(function, functionImpl);
-        return this;
-    }
-
-    public Expression withFunction(String function, UnaryFunction functionImpl) {
-        evaluator.addFunction(function, functionImpl);
-        return this;
-    }
-
-    public Expression withFunction(String function, BinaryFunction functionImpl) {
-        evaluator.addFunction(function, functionImpl);
-        return this;
-    }
-
-    public Expression withVariable(String variable, BigDecimal value) {
+    public Expression<T> withVariable(String variable,T value) {
         evaluator.addVariable(variable, value);
         return this;
     }
 
-    public Expression withVariable(String variable, String value) {
-        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+    public Expression<T> withVarArgsFunction(String function, VarArgsFunction<T> functionImpl) {
+        evaluator.addFunction(function, functionImpl);
         return this;
     }
 
-    public Expression withVariable(String variable, long value) {
-        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+    public Expression<T> withFunction(String function, UnaryFunction<T> functionImpl) {
+        evaluator.addFunction(function, functionImpl);
         return this;
     }
 
-    public Expression withVariable(String variable, double value) {
-        evaluator.addVariable(variable, BigDecimalUtils.valueOf(value));
+    public Expression<T> withFunction(String function, BinaryFunction<T> functionImpl) {
+        evaluator.addFunction(function, functionImpl);
         return this;
     }
 
-    public Expression withOperator(char operator, int precedence, BinaryOperation operation) {
+    public Expression<T> withOperator(char operator, int precedence, BinaryOperation<T> operation) {
         evaluator.addOperator(operator, precedence, operation);
         return this;
     }
 
-    public Expression withOperator(char operator, int precedence, UnaryOperation operation) {
+    public Expression<T> withOperator(char operator, int precedence, UnaryOperation<T> operation) {
         evaluator.addOperator(operator, precedence, operation);
         return this;
     }
 
-    public Expression withOperator(char operator, BinaryOperation operation) {
+    public Expression<T> withOperator(char operator, BinaryOperation<T> operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
     }
 
-    public Expression withOperator(char operator, UnaryOperation operation) {
+    public Expression<T> withOperator(char operator, UnaryOperation<T> operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
     }
