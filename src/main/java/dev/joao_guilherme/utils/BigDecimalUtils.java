@@ -5,6 +5,7 @@ import ch.obermuhlner.math.big.BigDecimalMath;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.List;
 
 public abstract class BigDecimalUtils {
 
@@ -131,8 +132,8 @@ public abstract class BigDecimalUtils {
         return new BigDecimal(a.stripTrailingZeros().toPlainString());
     }
 
-    public static BigDecimal max(BigDecimal... values) {
-        BigDecimal max = values[0];
+    public static BigDecimal max(List<BigDecimal> values) {
+        BigDecimal max = values.getFirst();
         for (BigDecimal value : values) {
             if (value.compareTo(max) > 0) {
                 max = value;
@@ -141,8 +142,8 @@ public abstract class BigDecimalUtils {
         return max;
     }
 
-    public static BigDecimal min(BigDecimal... values) {
-        BigDecimal min = values[0];
+    public static BigDecimal min(List<BigDecimal> values) {
+        BigDecimal min = values.getFirst();
         for (BigDecimal value : values) {
             if (value.compareTo(min) < 0) {
                 min = value;
