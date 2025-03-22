@@ -1,10 +1,8 @@
 package dev.joao_guilherme.operators;
 
-import java.math.BigDecimal;
-
 @FunctionalInterface
-public interface BinaryOperation extends Operator {
+public interface BinaryOperation<T> extends Operator<T> {
 
     @Override
-    BigDecimal apply(BigDecimal a, BigDecimal b);
+    T apply(T a, T b);
 }

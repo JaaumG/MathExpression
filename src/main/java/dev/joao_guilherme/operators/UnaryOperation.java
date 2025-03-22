@@ -1,10 +1,8 @@
 package dev.joao_guilherme.operators;
 
-import java.math.BigDecimal;
-
 @FunctionalInterface
-public interface UnaryOperation extends Operator {
+public interface UnaryOperation<T> extends Operator<T> {
 
     @Override
-    BigDecimal apply(BigDecimal a);
+    T apply(T a);
 }
