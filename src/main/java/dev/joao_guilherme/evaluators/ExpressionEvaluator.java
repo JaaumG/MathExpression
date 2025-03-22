@@ -5,27 +5,26 @@ import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.Operator;
 import dev.joao_guilherme.operators.UnaryOperation;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ExpressionEvaluator implements Cloneable {
+public abstract class ExpressionEvaluator<T> implements Cloneable {
 
-    private final Map<Character, Operator> operators = new HashMap<>();
-    private final Map<String, Function> functions = new HashMap<>();
-    private final Map<String, BigDecimal> variables = new HashMap<>();
+    private final Map<Character, Operator<T>> operators = new HashMap<>();
+    private final Map<String, Function<T>> functions = new HashMap<>();
+    private final Map<String, T> variables = new HashMap<>();
 
-    public abstract BigDecimal evaluate(String expression);
+    public abstract T evaluate(String expression);
 
-    public void addFunction(String function, Function functionImpl) {
-        functions.put(function, functionImpl);
+    public void addFunction(String name, Function<T> function) {
+        functions.put(name, function);
     }
 
     public boolean isOperator(char operator) {
         return operators.containsKey(operator);
     }
 
-    public Operator getOperator(char operator) {
+    public Operator<T> getOperator(char operator) {
         return operators.get(operator);
     }
 
@@ -33,7 +32,7 @@ public abstract class ExpressionEvaluator implements Cloneable {
         return functions.containsKey(function);
     }
 
-    public Function getFunction(String function) {
+    public Function<T> getFunction(String function) {
         return functions.get(function);
     }
 
@@ -41,18 +40,18 @@ public abstract class ExpressionEvaluator implements Cloneable {
         return variables.containsKey(variable);
     }
 
-    public BigDecimal getVariable(String variable) {
+    public T getVariable(String variable) {
         return variables.get(variable);
     }
 
-    public void addVariable(String variable, BigDecimal value) {
+    public <E extends T> void addVariable(String variable, E value) {
         variables.put(variable, value);
     }
 
-    public void addOperator(char operator, int precedence, UnaryOperation operation) {
-        addOperator(new UnaryOperation() {
+    public void addOperator(char operator, int precedence, UnaryOperation<T> operation) {
+        addOperator(new UnaryOperation<>() {
             @Override
-            public BigDecimal apply(BigDecimal a) {
+            public T apply(T a) {
                 return operation.apply(a);
             }
 
@@ -68,10 +67,10 @@ public abstract class ExpressionEvaluator implements Cloneable {
         });
     }
 
-    public void addOperator(char operator, int precedence, BinaryOperation operation) {
-        addOperator(new BinaryOperation() {
+    public void addOperator(char operator, int precedence, BinaryOperation<T> operation) {
+        addOperator(new BinaryOperation<>() {
             @Override
-            public BigDecimal apply(BigDecimal b, BigDecimal a) {
+            public T apply(T b, T a) {
                 return operation.apply(b, a);
             }
 
@@ -87,15 +86,16 @@ public abstract class ExpressionEvaluator implements Cloneable {
         });
     }
 
-    protected void addOperator(Operator operator) {
+    protected void addOperator(Operator<T> operator) {
         operators.put(operator.getSymbol(), operator);
     }
 
-    public ExpressionEvaluator newInstance() {
+    @SuppressWarnings("unchecked")
+    public ExpressionEvaluator<T> newInstance() {
         try {
-            return (ExpressionEvaluator) this.clone();
+            return (ExpressionEvaluator<T>) this.clone();
         } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException("Failed to clone ExpressionEvaluator");
+            throw new IllegalStateException("Failed to clone ExpressionEvaluator", e);
         }
     }
 }
