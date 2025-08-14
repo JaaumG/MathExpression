@@ -24,9 +24,12 @@ public abstract class FunctionUtils {
         if (innerExpression.contains(",")) {
             String[] parts = splitPreservingGroups(innerExpression);
             BigDecimal[] args = Arrays.stream(parts).map(evaluator.newInstance()::evaluate).toArray(BigDecimal[]::new);
+            evaluator.addStep(expression.substring(start, i)+"("+String.join(",", parts)+")");
             return applyFunction(func, args);
         } else {
-            return applyFunction(func, evaluator.newInstance().evaluate(innerExpression));
+            BigDecimal evaluate = evaluator.newInstance().evaluate(innerExpression);
+            evaluator.addStep(expression.substring(start, i)+"("+evaluate+")");
+            return applyFunction(func, evaluate);
         }
     }
 
