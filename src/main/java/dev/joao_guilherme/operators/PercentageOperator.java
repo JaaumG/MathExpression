@@ -36,6 +36,7 @@ public class PercentageOperator implements UnaryOperation {
                     BigDecimal percentage = values.pop();
                     BigDecimal value = values.pop();
                     values.push(additionOperator.apply(value, value.multiply(apply(percentage))));
+                    ops.pop();
                 }
                 case SubtractOperator subtractOperator -> {
                     BigDecimal percentage = values.pop();

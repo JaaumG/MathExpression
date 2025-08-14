@@ -40,7 +40,7 @@ public abstract class ExpressionUtils {
                 return i;
             }
         }
-        return -1;
+        throw new IllegalArgumentException("indexClosingBracket out of range");
     }
 
     public static boolean isOpeningBracket(char c) {

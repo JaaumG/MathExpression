@@ -5,6 +5,7 @@ import dev.joao_guilherme.functions.trigonometric.*;
 import dev.joao_guilherme.operators.*;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 import dev.joao_guilherme.utils.FunctionUtils;
+import dev.joao_guilherme.utils.StepHandler;
 
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
@@ -19,6 +20,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     protected static final Pattern NUMBER_PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
     protected static final Pattern FUNCTION_PATTERN = Pattern.compile("[a-zA-Z0-9]+");
+    private static final StepHandler STEP_HANDLER = StepHandler.getInstance();
     protected Deque<BigDecimal> values = new ArrayDeque<>();
     protected Deque<Operator> ops = new ArrayDeque<>();
     protected int currentIndex = 0;
@@ -64,6 +66,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         if (expressionToEvaluate == null || expressionToEvaluate.isEmpty()) {
             throw new IllegalArgumentException("Expression cannot be null or empty");
         }
+        STEP_HANDLER.addStep(expressionToEvaluate);
         validateAndInitializeStack(expressionToEvaluate);
 
         while (currentIndex < expression.length()) {
@@ -81,10 +84,14 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         }
 
         while (!ops.isEmpty()) {
-            applyOperator(ops.pop(), values);
+            Operator nextOp = ops.pop();
+            BigDecimal operationResult = applyOperator(nextOp, values);
+            STEP_HANDLER.addStep(operationResult);
+            values.push(operationResult);
         }
-
-        return values.pop().stripTrailingZeros();
+        BigDecimal lastValue = values.pop().stripTrailingZeros();
+        STEP_HANDLER.addStep(lastValue);
+        return lastValue;
     }
 
     protected void checkForImplicitMultiplication() {
@@ -150,7 +157,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     private void solveInnerExpression() {
         int j = getIndexClosingBracket(expression, currentIndex);
-        values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
+        BigDecimal value = newInstance().evaluate(expression.substring(currentIndex + 1, j));
+        values.push(value);
+        STEP_HANDLER.addStep(value);
         currentIndex = j + 1;
     }
 
@@ -170,7 +179,10 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
             this.percentageHandler(pop);
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
-                applyOperator(ops.pop(), values);
+                Operator nextOp = ops.pop();
+                BigDecimal operationResult = applyOperator(nextOp, values);
+                STEP_HANDLER.addStep(operationResult);
+                values.push(operationResult);
             }
             ops.push(op);
         }

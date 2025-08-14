@@ -8,8 +8,11 @@ import dev.joao_guilherme.functions.VarArgsFunction;
 import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.UnaryOperation;
 import dev.joao_guilherme.utils.BigDecimalUtils;
+import dev.joao_guilherme.utils.StepHandler;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Expression {
 
@@ -159,5 +162,24 @@ public class Expression {
     public Expression withOperator(char operator, UnaryOperation operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
+    }
+
+    public void steps(Consumer<String> consumer) {
+        StepHandler.clear();
+        StepHandler.setEvaluator(evaluator);
+        evaluator.evaluate(expression);
+        StepHandler.getInstance().getSteps().forEach(consumer);
+    }
+
+    public List<String> steps() {
+        StepHandler.clear();
+        StepHandler.setEvaluator(evaluator);
+        evaluator.evaluate(expression);
+        return StepHandler.getInstance().getSteps();
+    }
+
+    @Override
+    public String toString() {
+        return expression + " = " + evaluator.evaluate(expression);
     }
 }

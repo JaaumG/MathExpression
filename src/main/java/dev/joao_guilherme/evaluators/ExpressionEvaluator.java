@@ -91,6 +91,7 @@ public abstract class ExpressionEvaluator implements Cloneable {
         operators.put(operator.getSymbol(), operator);
     }
 
+
     public ExpressionEvaluator newInstance() {
         try {
             return (ExpressionEvaluator) this.clone();
