@@ -85,7 +85,6 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
         while (!ops.isEmpty()) {
             Operator nextOp = ops.pop();
-            STEP_HANDLER.addStep(nextOp, values);
             applyOperator(nextOp, values);
             STEP_HANDLER.addStep(values.peek());
         }
@@ -180,7 +179,6 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
                 Operator nextOp = ops.pop();
-                STEP_HANDLER.addStep(nextOp, values);
                 applyOperator(nextOp, values);
                 STEP_HANDLER.addStep(values.peek());
             }
