@@ -64,6 +64,7 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         if (expressionToEvaluate == null || expressionToEvaluate.isEmpty()) {
             throw new IllegalArgumentException("Expression cannot be null or empty");
         }
+        addStep(expressionToEvaluate);
         validateAndInitializeStack(expressionToEvaluate);
 
         while (currentIndex < expression.length()) {
@@ -81,10 +82,12 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         }
 
         while (!ops.isEmpty()) {
+            addStep(ops.peek(), values);
             applyOperator(ops.pop(), values);
         }
-
-        return values.pop().stripTrailingZeros();
+        BigDecimal bigDecimal = values.pop().stripTrailingZeros();
+        addStep(bigDecimal);
+        return bigDecimal;
     }
 
     protected void checkForImplicitMultiplication() {
@@ -150,7 +153,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
     private void solveInnerExpression() {
         int j = getIndexClosingBracket(expression, currentIndex);
-        values.push(newInstance().evaluate(expression.substring(currentIndex + 1, j)));
+        BigDecimal value = newInstance().evaluate(expression.substring(currentIndex + 1, j));
+        values.push(value);
+        addStep(value);
         currentIndex = j + 1;
     }
 
@@ -170,7 +175,10 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
             this.percentageHandler(pop);
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
-                applyOperator(ops.pop(), values);
+                Operator nextOp = ops.pop();
+                addStep(nextOp, values);
+                applyOperator(nextOp, values);
+                addStep(values.peek());
             }
             ops.push(op);
         }
