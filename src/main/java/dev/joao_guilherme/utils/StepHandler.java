@@ -32,7 +32,7 @@ public class StepHandler {
     }
 
     public static void clear() {
-        instance = null;
+        getInstance().steps.clear();
     }
 
     public void addStep(Operator operator, Deque<BigDecimal> values) {
