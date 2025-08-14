@@ -15,7 +15,7 @@ import java.util.List;
 public class StepHandler {
 
     private final List<String> steps;
-    private static StepHandler instance;
+    private static volatile StepHandler instance;
     private static ExpressionEvaluator evaluator = new ArithmeticExpressionEvaluator(); //Base evaluator for steps
 
     private StepHandler(final List<String> steps) {
