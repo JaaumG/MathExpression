@@ -85,13 +85,13 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
         while (!ops.isEmpty()) {
             Operator nextOp = ops.pop();
-            BigDecimal bigDecimal = applyOperator(nextOp, values);
-            STEP_HANDLER.addStep(bigDecimal);
-            values.push(bigDecimal);
+            BigDecimal operationResult = applyOperator(nextOp, values);
+            STEP_HANDLER.addStep(operationResult);
+            values.push(operationResult);
         }
-        BigDecimal bigDecimal = values.pop().stripTrailingZeros();
-        STEP_HANDLER.addStep(bigDecimal);
-        return bigDecimal;
+        BigDecimal lastValue = values.pop().stripTrailingZeros();
+        STEP_HANDLER.addStep(lastValue);
+        return lastValue;
     }
 
     protected void checkForImplicitMultiplication() {
@@ -180,9 +180,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
                 Operator nextOp = ops.pop();
-                BigDecimal bigDecimal = applyOperator(nextOp, values);
-                STEP_HANDLER.addStep(bigDecimal);
-                values.push(bigDecimal);
+                BigDecimal operationResult = applyOperator(nextOp, values);
+                STEP_HANDLER.addStep(operationResult);
+                values.push(operationResult);
             }
             ops.push(op);
         }
