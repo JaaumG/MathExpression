@@ -36,18 +36,12 @@ public class StepHandler {
         getInstance().steps.clear();
     }
 
-    public void addStep(Operator operator, Deque<BigDecimal> values) {
-        switch (operator) {
-            case UnaryOperation uno -> addStep(values.peek().stripTrailingZeros().toPlainString() + " " + uno.getSymbol());
-            case BinaryOperation bin -> {
-                var first = values.pop();
-                var second = values.pop();
-                addStep(second.stripTrailingZeros().toPlainString() + " " + bin.getSymbol() + " " + first.stripTrailingZeros().toPlainString());
-                values.push(second);
-                values.push(first);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + operator);
-        }
+    public void addStep(UnaryOperation operation, BigDecimal value) {
+        addStep(operation.getSymbol() + " " + value.stripTrailingZeros().toPlainString());
+    }
+
+    public void addStep(BinaryOperation operation, BigDecimal first, BigDecimal second) {
+        addStep(first.stripTrailingZeros().toPlainString() + " " + operation.getSymbol() + " " + second.stripTrailingZeros().toPlainString());
     }
 
     public void addStep(BigDecimal value) {
