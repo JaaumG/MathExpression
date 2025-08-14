@@ -59,7 +59,7 @@ public class StepHandler {
     }
 
     private String getFunctionNameFromStep(String step) {
-        return step.substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('('));
+        return step.substring(0, step.indexOf('(') == -1 ? step.length() : step.indexOf('('));
     }
 
     public List<String> getSteps() {
