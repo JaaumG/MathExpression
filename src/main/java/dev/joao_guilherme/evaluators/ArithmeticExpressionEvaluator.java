@@ -82,8 +82,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         }
 
         while (!ops.isEmpty()) {
-            addStep(ops.peek(), values);
-            applyOperator(ops.pop(), values);
+            Operator nextOp = ops.pop();
+            addStep(nextOp, values);
+            applyOperator(nextOp, values);
         }
         BigDecimal bigDecimal = values.pop().stripTrailingZeros();
         addStep(bigDecimal);
