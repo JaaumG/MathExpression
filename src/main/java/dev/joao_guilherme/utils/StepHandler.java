@@ -1,0 +1,69 @@
+package dev.joao_guilherme.utils;
+
+
+import dev.joao_guilherme.evaluators.ExpressionEvaluator;
+import dev.joao_guilherme.operators.BinaryOperation;
+import dev.joao_guilherme.operators.Operator;
+import dev.joao_guilherme.operators.UnaryOperation;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
+public class StepHandler {
+
+    private final List<String> steps;
+    private static StepHandler instance;
+    private static ExpressionEvaluator evaluator;
+
+    private StepHandler(final List<String> steps) {
+        this.steps = steps;
+    }
+
+    public static void setEvaluator(ExpressionEvaluator evaluator) {
+        StepHandler.evaluator = evaluator;
+    }
+    public static StepHandler getInstance() {
+        if (instance == null) {
+            instance = new StepHandler(new ArrayList<>());
+        }
+        return instance;
+    }
+
+    public static void clear() {
+        instance = null;
+    }
+
+    public void addStep(Operator operator, Deque<BigDecimal> values) {
+        switch (operator) {
+            case UnaryOperation uno -> addStep(values.peek().stripTrailingZeros().toPlainString() + " " + uno.getSymbol());
+            case BinaryOperation bin -> {
+                var first = values.pop();
+                var second = values.pop();
+                addStep(second.stripTrailingZeros().toPlainString() + " " + bin.getSymbol() + " " + first.stripTrailingZeros().toPlainString());
+                values.push(second);
+                values.push(first);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + operator);
+        }
+    }
+
+    public void addStep(BigDecimal value) {
+        addStep(value.stripTrailingZeros().toPlainString());
+    }
+
+    public void addStep(String step) {
+        String removedWhiteSpace = step.replace(" ", "");
+        boolean isLastStepFuction = !steps.isEmpty() && evaluator.isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
+        boolean isCurrentStepFunctionParameter = isLastStepFuction && steps.getLast().substring(steps.getLast().indexOf('(') + 1, steps.getLast().indexOf(')')).equals(removedWhiteSpace);
+        boolean isCurrentStepSameAsLast = removedWhiteSpace.equals(steps.isEmpty() ? "" : steps.getLast());
+        if (!isCurrentStepSameAsLast && !isCurrentStepFunctionParameter) {
+            steps.add(removedWhiteSpace);
+        }
+    }
+
+    public List<String> getSteps() {
+        return steps;
+    }
+}
