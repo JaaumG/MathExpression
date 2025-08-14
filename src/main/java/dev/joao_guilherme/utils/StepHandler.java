@@ -15,7 +15,7 @@ import java.util.List;
 public class StepHandler {
 
     private final List<String> steps;
-    private static StepHandler instance;
+    private static volatile StepHandler instance;
     private static ExpressionEvaluator evaluator = new ArithmeticExpressionEvaluator(); //Base evaluator for steps
 
     private StepHandler(final List<String> steps) {
@@ -51,7 +51,8 @@ public class StepHandler {
     public void addStep(String step) {
         String removedWhiteSpace = step.replace(" ", "");
         boolean isLastStepFuction = !steps.isEmpty() && evaluator.isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
-        boolean isCurrentStepFunctionParameter = isLastStepFuction && steps.getLast().substring(steps.getLast().indexOf('(') + 1, steps.getLast().indexOf(')')).equals(removedWhiteSpace);
+        boolean isLastStepFunction = !steps.isEmpty() && evaluator.isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
+        boolean isCurrentStepFunctionParameter = isLastStepFunction && steps.getLast().substring(steps.getLast().indexOf('(') + 1, steps.getLast().indexOf(')')).equals(removedWhiteSpace);
         boolean isCurrentStepSameAsLast = removedWhiteSpace.equals(steps.isEmpty() ? "" : steps.getLast());
         if (!isCurrentStepSameAsLast && !isCurrentStepFunctionParameter) {
             steps.add(removedWhiteSpace);
