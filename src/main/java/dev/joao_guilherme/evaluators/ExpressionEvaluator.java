@@ -6,14 +6,14 @@ import dev.joao_guilherme.operators.Operator;
 import dev.joao_guilherme.operators.UnaryOperation;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ExpressionEvaluator implements Cloneable {
 
     private final Map<Character, Operator> operators = new HashMap<>();
     private final Map<String, Function> functions = new HashMap<>();
     private final Map<String, BigDecimal> variables = new HashMap<>();
+    private final List<String> steps = new ArrayList<>();
 
     public abstract BigDecimal evaluate(String expression);
 
@@ -89,6 +89,34 @@ public abstract class ExpressionEvaluator implements Cloneable {
 
     protected void addOperator(Operator operator) {
         operators.put(operator.getSymbol(), operator);
+    }
+
+    protected void addStep(Operator operator, Deque<BigDecimal> values) {
+        switch (operator) {
+            case UnaryOperation uno -> addStep(values.peek().stripTrailingZeros().toPlainString() + " " + uno.getSymbol());
+            case BinaryOperation bin -> {
+                var first = values.pop();
+                var second = values.pop();
+                addStep(second.stripTrailingZeros().toPlainString() + " " + bin.getSymbol() + " " + first.stripTrailingZeros().toPlainString());
+                values.push(second);
+                values.push(first);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + operator);
+        }
+    }
+
+    protected void addStep(BigDecimal value) {
+        addStep(value.stripTrailingZeros().toPlainString());
+    }
+
+    protected void addStep(String step) {
+        if (steps.isEmpty() || !steps.getLast().equals(step.replace(" ", ""))) {
+            steps.add(step);
+        }
+    }
+
+    public List<String> getSteps() {
+        return steps;
     }
 
     public ExpressionEvaluator newInstance() {
