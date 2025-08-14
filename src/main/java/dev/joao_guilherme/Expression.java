@@ -10,6 +10,8 @@ import dev.joao_guilherme.operators.UnaryOperation;
 import dev.joao_guilherme.utils.BigDecimalUtils;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class Expression {
 
@@ -159,5 +161,20 @@ public class Expression {
     public Expression withOperator(char operator, UnaryOperation operation) {
         evaluator.addOperator(operator, 1, operation);
         return this;
+    }
+
+    public void steps(Consumer<String> consumer) {
+        evaluator.evaluate(expression);
+        evaluator.getSteps().forEach(consumer);
+    }
+
+    public List<String> steps() {
+        evaluator.evaluate(expression);
+        return evaluator.getSteps();
+    }
+
+    @Override
+    public String toString() {
+        return expression + " = " + evaluator.evaluate(expression);
     }
 }
