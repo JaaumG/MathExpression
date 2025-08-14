@@ -6,7 +6,8 @@ import dev.joao_guilherme.operators.Operator;
 import dev.joao_guilherme.operators.UnaryOperation;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ExpressionEvaluator implements Cloneable {
 
