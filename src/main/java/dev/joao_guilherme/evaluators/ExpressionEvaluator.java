@@ -13,7 +13,6 @@ public abstract class ExpressionEvaluator implements Cloneable {
     private final Map<Character, Operator> operators = new HashMap<>();
     private final Map<String, Function> functions = new HashMap<>();
     private final Map<String, BigDecimal> variables = new HashMap<>();
-    private final List<String> steps = new ArrayList<>();
 
     public abstract BigDecimal evaluate(String expression);
 
@@ -91,37 +90,6 @@ public abstract class ExpressionEvaluator implements Cloneable {
         operators.put(operator.getSymbol(), operator);
     }
 
-    protected void addStep(Operator operator, Deque<BigDecimal> values) {
-        switch (operator) {
-            case UnaryOperation uno -> addStep(values.peek().stripTrailingZeros().toPlainString() + " " + uno.getSymbol());
-            case BinaryOperation bin -> {
-                var first = values.pop();
-                var second = values.pop();
-                addStep(second.stripTrailingZeros().toPlainString() + " " + bin.getSymbol() + " " + first.stripTrailingZeros().toPlainString());
-                values.push(second);
-                values.push(first);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + operator);
-        }
-    }
-
-    protected void addStep(BigDecimal value) {
-        addStep(value.stripTrailingZeros().toPlainString());
-    }
-
-    public void addStep(String step) {
-        String removedWhiteSpace = step.replace(" ", "");
-        boolean isLastStepFuction = !steps.isEmpty() && isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
-        boolean isCurrentStepFunctionParameter = isLastStepFuction && steps.getLast().substring(steps.getLast().indexOf('(') + 1, steps.getLast().indexOf(')')).equals(removedWhiteSpace);
-        boolean isCurrentStepSameAsLast = removedWhiteSpace.equals(steps.isEmpty() ? "" : steps.getLast());
-        if (!isCurrentStepSameAsLast && !isCurrentStepFunctionParameter) {
-            steps.add(removedWhiteSpace);
-        }
-    }
-
-    public List<String> getSteps() {
-        return steps;
-    }
 
     public ExpressionEvaluator newInstance() {
         try {
