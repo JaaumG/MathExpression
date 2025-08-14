@@ -1,6 +1,7 @@
 package dev.joao_guilherme.utils;
 
 
+import dev.joao_guilherme.evaluators.ArithmeticExpressionEvaluator;
 import dev.joao_guilherme.evaluators.ExpressionEvaluator;
 import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.Operator;
@@ -15,7 +16,7 @@ public class StepHandler {
 
     private final List<String> steps;
     private static StepHandler instance;
-    private static ExpressionEvaluator evaluator;
+    private static ExpressionEvaluator evaluator = new ArithmeticExpressionEvaluator(); //Base evaluator for steps
 
     private StepHandler(final List<String> steps) {
         this.steps = steps;
