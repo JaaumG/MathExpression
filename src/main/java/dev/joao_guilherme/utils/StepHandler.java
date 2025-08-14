@@ -50,13 +50,16 @@ public class StepHandler {
 
     public void addStep(String step) {
         String removedWhiteSpace = step.replace(" ", "");
-        boolean isLastStepFuction = !steps.isEmpty() && evaluator.isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
-        boolean isLastStepFunction = !steps.isEmpty() && evaluator.isFunction(steps.getLast().substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('(')));
+        boolean isLastStepFunction = !steps.isEmpty() && evaluator.isFunction(getFunctionNameFromStep(steps.getLast()));
         boolean isCurrentStepFunctionParameter = isLastStepFunction && steps.getLast().substring(steps.getLast().indexOf('(') + 1, steps.getLast().indexOf(')')).equals(removedWhiteSpace);
         boolean isCurrentStepSameAsLast = removedWhiteSpace.equals(steps.isEmpty() ? "" : steps.getLast());
         if (!isCurrentStepSameAsLast && !isCurrentStepFunctionParameter) {
             steps.add(removedWhiteSpace);
         }
+    }
+
+    private String getFunctionNameFromStep(String step) {
+        return step.substring(0, steps.getLast().indexOf('(') == -1 ? steps.getLast().length() : steps.getLast().indexOf('('));
     }
 
     public List<String> getSteps() {
