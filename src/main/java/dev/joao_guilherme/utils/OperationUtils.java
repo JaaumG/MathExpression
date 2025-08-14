@@ -15,20 +15,20 @@ public abstract class OperationUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void applyOperator(Operator lastOp, Deque<BigDecimal> values) {
-        switch (lastOp) {
+    public static BigDecimal applyOperator(Operator lastOp, Deque<BigDecimal> values) {
+        return switch (lastOp) {
             case UnaryOperation uOp -> {
                 BigDecimal value = values.pop();
                 STEP_HANDLER.addStep(uOp, value);
-                values.push(uOp.apply(value));
+                yield uOp.apply(value);
             }
             case BinaryOperation bOp -> {
                 BigDecimal value = values.pop();
                 BigDecimal secondValue = values.isEmpty() ? BigDecimal.ZERO : values.pop();
                 STEP_HANDLER.addStep(bOp, secondValue, value);
-                values.push(bOp.apply(value, secondValue));
+                yield bOp.apply(value, secondValue);
             }
             default -> throw new IllegalStateException("Unexpected value: " + lastOp);
-        }
+        };
     }
 }
