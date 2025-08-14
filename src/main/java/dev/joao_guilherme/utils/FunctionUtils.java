@@ -12,6 +12,8 @@ import static dev.joao_guilherme.utils.ExpressionUtils.getIndexClosingBracket;
 
 public abstract class FunctionUtils {
 
+    private static final StepHandler STEP_HANDLER = StepHandler.getInstance();
+
     private FunctionUtils() {
         throw new IllegalStateException("Utility class");
     }
@@ -24,11 +26,11 @@ public abstract class FunctionUtils {
         if (innerExpression.contains(",")) {
             String[] parts = splitPreservingGroups(innerExpression);
             BigDecimal[] args = Arrays.stream(parts).map(evaluator.newInstance()::evaluate).toArray(BigDecimal[]::new);
-            evaluator.addStep(expression.substring(start, i)+"("+String.join(",", parts)+")");
+            STEP_HANDLER.addStep(expression.substring(start, i)+"("+String.join(",", parts)+")");
             return applyFunction(func, args);
         } else {
             BigDecimal evaluate = evaluator.newInstance().evaluate(innerExpression);
-            evaluator.addStep(expression.substring(start, i)+"("+evaluate+")");
+            STEP_HANDLER.addStep(expression.substring(start, i)+"("+evaluate+")");
             return applyFunction(func, evaluate);
         }
     }
