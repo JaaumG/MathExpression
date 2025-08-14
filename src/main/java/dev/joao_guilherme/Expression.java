@@ -8,6 +8,7 @@ import dev.joao_guilherme.functions.VarArgsFunction;
 import dev.joao_guilherme.operators.BinaryOperation;
 import dev.joao_guilherme.operators.UnaryOperation;
 import dev.joao_guilherme.utils.BigDecimalUtils;
+import dev.joao_guilherme.utils.StepHandler;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -164,13 +165,17 @@ public class Expression {
     }
 
     public void steps(Consumer<String> consumer) {
+        StepHandler.clear();
+        StepHandler.setEvaluator(evaluator);
         evaluator.evaluate(expression);
-        evaluator.getSteps().forEach(consumer);
+        StepHandler.getInstance().getSteps().forEach(consumer);
     }
 
     public List<String> steps() {
+        StepHandler.clear();
+        StepHandler.setEvaluator(evaluator);
         evaluator.evaluate(expression);
-        return evaluator.getSteps();
+        return StepHandler.getInstance().getSteps();
     }
 
     @Override
