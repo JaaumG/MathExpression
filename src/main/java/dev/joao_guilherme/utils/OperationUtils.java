@@ -25,7 +25,7 @@ public abstract class OperationUtils {
             case BinaryOperation bOp -> {
                 BigDecimal value = values.pop();
                 BigDecimal secondValue = values.isEmpty() ? BigDecimal.ZERO : values.pop();
-                STEP_HANDLER.addStep(bOp, value, secondValue);
+                STEP_HANDLER.addStep(bOp, secondValue, value);
                 values.push(bOp.apply(value, secondValue));
             }
             default -> throw new IllegalStateException("Unexpected value: " + lastOp);
