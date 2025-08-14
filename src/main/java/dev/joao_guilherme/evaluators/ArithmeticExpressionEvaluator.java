@@ -85,8 +85,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
 
         while (!ops.isEmpty()) {
             Operator nextOp = ops.pop();
-            applyOperator(nextOp, values);
-            STEP_HANDLER.addStep(values.peek());
+            BigDecimal bigDecimal = applyOperator(nextOp, values);
+            STEP_HANDLER.addStep(bigDecimal);
+            values.push(bigDecimal);
         }
         BigDecimal bigDecimal = values.pop().stripTrailingZeros();
         STEP_HANDLER.addStep(bigDecimal);
@@ -179,8 +180,9 @@ public class ArithmeticExpressionEvaluator extends ExpressionEvaluator {
         } else {
             while (!ops.isEmpty() && ops.peek().hasHigherPrecedence(op)) {
                 Operator nextOp = ops.pop();
-                applyOperator(nextOp, values);
-                STEP_HANDLER.addStep(values.peek());
+                BigDecimal bigDecimal = applyOperator(nextOp, values);
+                STEP_HANDLER.addStep(bigDecimal);
+                values.push(bigDecimal);
             }
             ops.push(op);
         }
