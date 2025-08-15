@@ -41,14 +41,14 @@ public class PercentageOperator implements UnaryOperation {
                 case SubtractOperator subtractOperator -> {
                     BigDecimal percentage = values.pop();
                     BigDecimal value = values.pop();
-                    values.push(subtractOperator.apply(value.multiply(apply(percentage)), value));
+                    values.push(subtractOperator.apply(value, value.multiply(apply(percentage))));
                     ops.pop();
                 }
                 case MultiplyOperator ignored -> values.push(apply(values.pop()));
                 case DivideOperator divideOperator -> {
                     BigDecimal percentage = apply(values.pop());
                     BigDecimal lastValue = values.pop();
-                    values.push(divideOperator.apply(percentage, lastValue));
+                    values.push(divideOperator.apply(lastValue, percentage));
                     ops.pop();
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + ops.peek());

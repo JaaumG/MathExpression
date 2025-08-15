@@ -23,10 +23,10 @@ public abstract class OperationUtils {
                 yield uOp.apply(value);
             }
             case BinaryOperation bOp -> {
-                BigDecimal value = values.pop();
-                BigDecimal secondValue = values.isEmpty() ? BigDecimal.ZERO : values.pop();
-                STEP_HANDLER.addStep(bOp, secondValue, value);
-                yield bOp.apply(value, secondValue);
+                BigDecimal b = values.pop();
+                BigDecimal a = values.isEmpty() ? BigDecimal.ZERO : values.pop();
+                STEP_HANDLER.addStep(bOp, a, b);
+                yield bOp.apply(a, b);
             }
             default -> throw new IllegalStateException("Unexpected value: " + lastOp);
         };

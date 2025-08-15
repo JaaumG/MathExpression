@@ -71,8 +71,8 @@ public abstract class ExpressionEvaluator implements Cloneable {
     public void addOperator(char operator, int precedence, BinaryOperation operation) {
         addOperator(new BinaryOperation() {
             @Override
-            public BigDecimal apply(BigDecimal b, BigDecimal a) {
-                return operation.apply(b, a);
+            public BigDecimal apply(BigDecimal a, BigDecimal b) {
+                return operation.apply(a, b);
             }
 
             @Override
