@@ -8,7 +8,7 @@ public class DivideOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return BigDecimalUtils.divide(b, a);
+        return BigDecimalUtils.divide(a, b);
     }
 
     @Override

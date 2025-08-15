@@ -8,7 +8,7 @@ public class ExponentialOperator implements BinaryOperation {
 
     @Override
     public BigDecimal apply(BigDecimal a, BigDecimal b) {
-        return BigDecimalUtils.pow(b, a);
+        return BigDecimalUtils.pow(a, b);
     }
 
     @Override
